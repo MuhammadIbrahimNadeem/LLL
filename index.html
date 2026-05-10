@@ -1,0 +1,1219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>From Experience to Insight — Skyline Trust, Lahore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f3ec;
+    --bg-deep: #efece4;
+    --fg: #0e0c0a;
+    --fg-soft: #26241f;
+    --fg-mid: #524d44;
+    --fg-dim: #8a857c;
+    --fg-faint: #c4bfb5;
+    --line: rgba(14, 12, 10, 0.10);
+    --line-strong: rgba(14, 12, 10, 0.20);
+    --pad-x: clamp(32px, 4vw, 72px);
+    --pad-y: clamp(36px, 5vh, 72px);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+  body {
+    font-family: "Instrument Sans", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ===== Persistent chrome ===== */
+  .counter {
+    position: fixed;
+    top: 22px;
+    right: var(--pad-x);
+    z-index: 60;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--fg-dim);
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+    mix-blend-mode: difference;
+    color: #aeaaa3;
+  }
+  .progress {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    height: 1px;
+    background: rgba(14, 12, 10, 0.06);
+    z-index: 70;
+  }
+  .progress-bar {
+    height: 100%;
+    background: var(--fg);
+    width: 0;
+    transition: width 0.9s var(--ease);
+  }
+
+  /* ===== Deck ===== */
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.55s var(--ease-soft);
+    overflow: hidden;
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ===== Reveal animations (fill-mode: both, end state persists) ===== */
+  .line {
+    display: block;
+    overflow: hidden;
+    padding: 0.06em 0.04em;
+    margin: -0.06em -0.04em;
+  }
+  .line-inner {
+    display: block;
+    transform: translateY(115%);
+    will-change: transform;
+  }
+  .slide.active .line-inner {
+    animation: reveal 1.15s var(--ease) both;
+    animation-delay: calc(var(--d, 0) * 80ms + 240ms);
+  }
+  @keyframes reveal {
+    from { transform: translateY(115%); }
+    to   { transform: translateY(0); }
+  }
+
+  .fade {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  .slide.active .fade {
+    animation: fadeUp 1s var(--ease) both;
+    animation-delay: calc(var(--d, 0) * 80ms + 560ms);
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .scale-in {
+    transform: scale(1.06);
+    opacity: 0.85;
+  }
+  .slide.active .scale-in {
+    animation: scaleIn 1.6s var(--ease) both;
+    animation-delay: 100ms;
+  }
+  @keyframes scaleIn {
+    from { transform: scale(1.06); opacity: 0.85; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+
+  /* ===== Typography ===== */
+  .display {
+    font-family: "Instrument Sans", sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 0.92;
+    color: var(--fg);
+  }
+  .display em {
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  /* ============ 01 · COVER (full-bleed video) ============ */
+  .slide-cover { padding: 0; }
+  .cover-video-wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #14110d;
+  }
+  .cover-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: contrast(1.05) saturate(0.7) brightness(0.92);
+  }
+  .slide-cover.active .cover-video {
+    animation: heroZoom 24s var(--ease-soft) both;
+  }
+  @keyframes heroZoom {
+    from { transform: scale(1.06); }
+    to   { transform: scale(1.18); }
+  }
+  .cover-scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(120% 90% at 50% 50%, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.55) 100%),
+      linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.30) 35%, rgba(0,0,0,0.35) 60%, rgba(0,0,0,0.78) 100%);
+    z-index: 2;
+  }
+  .cover-content {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    padding: var(--pad-y) var(--pad-x);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #ffffff;
+  }
+  .cover-top {
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: rgba(255,255,255,0.85);
+  }
+  .cover-title {
+    font-size: clamp(64px, 10vw, 180px);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 0.9;
+    color: #ffffff;
+    max-width: 14ch;
+  }
+  .cover-title em {
+    font-style: italic;
+    font-weight: 500;
+  }
+  .cover-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .cover-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.85);
+  }
+  .cover-meta .dim { color: rgba(255,255,255,0.6); }
+
+  /* ============ 02 · CONTEXT (50/50 image + text) ============ */
+  .slide-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .image-half {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-deep);
+  }
+  .image-half img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.4) contrast(1.05) saturate(0.78) brightness(0.92);
+  }
+  .image-half::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background:
+      linear-gradient(180deg, rgba(14, 12, 10, 0.20) 0%, rgba(14, 12, 10, 0.10) 50%, rgba(14, 12, 10, 0.30) 100%);
+  }
+  .text-half {
+    padding: var(--pad-y) var(--pad-x);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(28px, 4vh, 56px);
+    overflow: hidden;
+  }
+  .split-title {
+    font-size: clamp(48px, 6vw, 96px);
+    line-height: 0.94;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+  }
+  .split-title em { font-style: italic; }
+
+  .roles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line-strong);
+  }
+  .role h4 {
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 13.5px;
+    letter-spacing: -0.005em;
+    color: var(--fg);
+    margin-bottom: 6px;
+  }
+  .role p {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--fg-mid);
+  }
+
+  /* ============ 03 · ISSUE (edge-to-edge) ============ */
+  .slide-edge {
+    display: flex;
+    flex-direction: column;
+    padding: var(--pad-y) 0 0 0;
+    height: 100%;
+  }
+  .edge-padding-x { padding: 0 var(--pad-x); }
+  .edge-headline {
+    padding: 0 var(--pad-x);
+    font-size: clamp(64px, 9.4vw, 180px);
+    line-height: 0.93;
+    letter-spacing: -0.045em;
+    font-weight: 500;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .edge-headline em { font-style: italic; }
+  .edge-headline .light { font-weight: 400; color: var(--fg-mid); }
+
+  .three-layer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--line-strong);
+  }
+  .layer {
+    padding: clamp(20px, 3vh, 32px) clamp(20px, 2.4vw, 36px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-right: 1px solid var(--line);
+  }
+  .layer:last-child { border-right: none; }
+  .layer-num {
+    font-size: 12px;
+    color: var(--fg-dim);
+    font-variant-numeric: tabular-nums;
+  }
+  .layer h3 {
+    font-family: inherit;
+    font-size: clamp(17px, 1.4vw, 22px);
+    font-weight: 500;
+    letter-spacing: -0.022em;
+    line-height: 1.18;
+    color: var(--fg);
+  }
+  .layer p {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--fg-mid);
+  }
+
+  /* ============ 04 · BIAS (50/50, simpler) ============ */
+  .pull-quote {
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(18px, 1.5vw, 24px);
+    line-height: 1.4;
+    color: var(--fg-soft);
+    border-left: 1px solid var(--fg);
+    padding: 6px 0 6px 20px;
+    max-width: 36ch;
+  }
+  .bias-mini {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--line-strong);
+  }
+  .bias-mini > div {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--fg-mid);
+  }
+  .bias-mini h5 {
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 13.5px;
+    color: var(--fg);
+  }
+
+  /* ============ 05 · JOHARI (50/50: title + grid) ============ */
+  .johari-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    border: 1px solid var(--line-strong);
+    width: 100%;
+    aspect-ratio: 1.4 / 1;
+    max-height: 70vh;
+    margin: auto 0;
+  }
+  .cell {
+    padding: clamp(20px, 2.4vw, 32px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+    background: var(--bg);
+  }
+  .cell:nth-child(2n) { border-right: none; }
+  .cell:nth-child(n+3) { border-bottom: none; }
+  .cell h4 {
+    font-family: inherit;
+    font-weight: 500;
+    font-size: clamp(22px, 2.2vw, 36px);
+    letter-spacing: -0.03em;
+    color: var(--fg);
+  }
+  .cell .axes {
+    font-size: 11.5px;
+    color: var(--fg-dim);
+    line-height: 1.5;
+  }
+  .cell.invert {
+    background: var(--fg);
+    color: var(--bg);
+    border-color: var(--fg);
+  }
+  .cell.invert h4 { color: var(--bg); }
+  .cell.invert .axes { color: rgba(255,255,255,0.65); }
+  .cell.invert .cell-arrow { color: rgba(255,255,255,0.85); font-style: italic; font-size: 12.5px; margin-top: 6px; }
+  .johari-caption {
+    font-size: clamp(14px, 1.05vw, 16px);
+    line-height: 1.6;
+    color: var(--fg-mid);
+    max-width: 38ch;
+  }
+  .johari-caption b { font-weight: 600; color: var(--fg); }
+  .johari-caption em { font-style: italic; color: var(--fg); }
+
+  /* ============ 06 · COMMUNICATION (50/50) ============ */
+  .comm-flow {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+  .node {
+    border: 1px solid var(--line-strong);
+    padding: clamp(14px, 2vh, 22px) clamp(14px, 1.6vw, 22px);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 130px;
+    background: var(--bg);
+  }
+  .node h4 {
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    color: var(--fg);
+  }
+  .node .node-step {
+    font-size: 11px;
+    color: var(--fg-dim);
+    margin-bottom: 2px;
+  }
+  .node p {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--fg-mid);
+  }
+  .node.invert {
+    background: var(--fg);
+    color: var(--bg);
+    border-color: var(--fg);
+  }
+  .node.invert h4 { color: var(--bg); }
+  .node.invert .node-step { color: rgba(255,255,255,0.6); }
+  .node.invert p { color: rgba(255,255,255,0.85); }
+  .kicker {
+    font-size: clamp(17px, 1.4vw, 22px);
+    line-height: 1.35;
+    letter-spacing: -0.014em;
+    color: var(--fg-soft);
+    max-width: 50ch;
+  }
+  .kicker em {
+    font-style: italic;
+    color: var(--fg);
+    font-weight: 500;
+  }
+
+  /* ============ 07 · ETHICS (edge-to-edge) ============ */
+  .ethics-table {
+    border-top: 1px solid var(--fg);
+  }
+  .ethics-row {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) 2fr minmax(120px, 180px);
+    gap: clamp(20px, 3vw, 50px);
+    align-items: center;
+    padding: clamp(20px, 3vh, 36px) var(--pad-x);
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .ethics-row .lens {
+    font-family: inherit;
+    font-weight: 500;
+    font-size: clamp(26px, 2.6vw, 44px);
+    letter-spacing: -0.03em;
+    color: var(--fg);
+  }
+  .ethics-row .lens em { font-style: italic; }
+  .ethics-row .desc {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--fg-mid);
+  }
+  .ethics-row .verdict {
+    font-size: 14px;
+    text-align: right;
+    font-style: italic;
+    color: var(--fg);
+  }
+  .ethics-row.weak {
+    background: var(--fg);
+    color: var(--bg);
+    border-color: var(--fg);
+  }
+  .ethics-row.weak .lens,
+  .ethics-row.weak .verdict { color: var(--bg); }
+  .ethics-row.weak .desc { color: rgba(255,255,255,0.78); }
+  .ethics-kicker {
+    font-size: clamp(15px, 1.2vw, 19px);
+    line-height: 1.45;
+    color: var(--fg-soft);
+    max-width: 64ch;
+    padding: clamp(20px, 3vh, 36px) var(--pad-x);
+  }
+  .ethics-kicker em {
+    font-style: italic;
+    color: var(--fg);
+    font-weight: 500;
+  }
+
+  /* ============ 08 · LEADERSHIP (edge-to-edge) ============ */
+  .actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--fg);
+    border-bottom: 1px solid var(--fg);
+  }
+  .action {
+    padding: clamp(24px, 3vh, 40px) clamp(20px, 2.2vw, 36px);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--line-strong);
+    min-height: 360px;
+  }
+  .action:last-child { border-right: none; }
+  .action-step {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 12px;
+  }
+  .action-head h3 {
+    font-family: inherit;
+    font-weight: 500;
+    font-size: clamp(15px, 1.05vw, 18px);
+    letter-spacing: -0.018em;
+    line-height: 1.3;
+    color: var(--fg);
+  }
+  .action-head h3 em { font-style: italic; }
+  .kpi-stat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(16px, 3vh, 28px) 0;
+  }
+  .kpi-value {
+    font-family: inherit;
+    font-size: clamp(56px, 6.4vw, 116px);
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    line-height: 0.88;
+    color: var(--fg);
+    display: block;
+  }
+  .kpi-unit {
+    font-size: 0.42em;
+    font-weight: 400;
+    margin-left: 4px;
+    letter-spacing: -0.02em;
+    vertical-align: 0.18em;
+  }
+  .kpi-caption {
+    font-size: clamp(12.5px, 1vw, 14.5px);
+    color: var(--fg-mid);
+    margin-top: 14px;
+    line-height: 1.45;
+    max-width: 24ch;
+  }
+  .action-detail {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--fg-mid);
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+
+  /* ============ 09 · CLOSE (edge-to-edge) ============ */
+  .close-headline {
+    font-size: clamp(64px, 10vw, 200px);
+    line-height: 0.92;
+    letter-spacing: -0.05em;
+    font-weight: 500;
+  }
+  .close-headline em { font-style: italic; }
+  .close-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+    padding: clamp(20px, 3vh, 32px) var(--pad-x);
+    border-top: 1px solid var(--line-strong);
+  }
+  .signoff {
+    max-width: 44ch;
+    font-size: clamp(14px, 1.1vw, 17px);
+    line-height: 1.55;
+    color: var(--fg-mid);
+  }
+  .signoff em {
+    font-style: italic;
+    color: var(--fg);
+  }
+  .thanks {
+    font-size: clamp(14px, 1vw, 16px);
+    color: var(--fg);
+    font-style: italic;
+    white-space: nowrap;
+  }
+
+  /* ============ Stats grid (By the Numbers) ============ */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--fg);
+    border-bottom: 1px solid var(--fg);
+  }
+  .stat {
+    padding: clamp(22px, 3.2vh, 40px) clamp(20px, 2vw, 32px);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-right: 1px solid var(--line-strong);
+    min-height: 260px;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+  }
+  .stat-value {
+    font-family: inherit;
+    font-size: clamp(60px, 6.6vw, 124px);
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    line-height: 0.88;
+    color: var(--fg);
+    margin-top: auto;
+    display: block;
+  }
+  .stat-unit {
+    font-size: 0.42em;
+    font-weight: 400;
+    margin-left: 4px;
+    letter-spacing: -0.02em;
+    vertical-align: 0.18em;
+  }
+  .stat-caption {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--fg-mid);
+    max-width: 24ch;
+    margin-top: 6px;
+  }
+
+  /* ============ Growth grid (Personal reflection) ============ */
+  .growth-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .growth {
+    padding: clamp(22px, 3vh, 40px) clamp(22px, 2.4vw, 40px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    border-right: 1px solid var(--line);
+    min-height: 280px;
+  }
+  .growth:last-child { border-right: none; }
+  .growth-tag {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--fg-dim);
+  }
+  .growth-before {
+    font-size: 14px;
+    color: var(--fg-dim);
+    font-style: italic;
+    text-decoration: line-through;
+    text-decoration-color: var(--fg-faint);
+    line-height: 1.45;
+    max-width: 24ch;
+  }
+  .growth h3 {
+    font-family: inherit;
+    font-weight: 500;
+    font-size: clamp(19px, 1.6vw, 26px);
+    letter-spacing: -0.026em;
+    line-height: 1.22;
+    color: var(--fg);
+    margin-top: auto;
+    max-width: 26ch;
+  }
+  .growth h3 em { font-style: italic; }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 960px) {
+    .slide-split { grid-template-columns: 1fr; grid-template-rows: 1fr 1.4fr; }
+    .image-half { min-height: 38vh; }
+    .three-layer, .roles, .actions, .comm-flow, .stats-grid, .growth-grid {
+      grid-template-columns: 1fr;
+    }
+    .layer, .action, .stat, .growth { border-right: none; border-bottom: 1px solid var(--line); }
+    .layer:last-child, .action:last-child, .stat:last-child, .growth:last-child { border-bottom: none; }
+    .ethics-row { grid-template-columns: 1fr; gap: 6px; }
+    .ethics-row .verdict { text-align: left; }
+    .bias-mini > div { grid-template-columns: 1fr; gap: 4px; }
+    .close-foot { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide.active .line-inner,
+    .slide.active .fade,
+    .slide.active .scale-in,
+    .slide-cover.active .cover-video {
+      animation: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="counter" id="counter">01 / 09</div>
+
+<main class="deck" id="deck">
+
+  <!-- ============ 01 · COVER (full-bleed video) ============ -->
+  <section class="slide slide-cover active" data-i="0">
+    <div class="cover-video-wrap">
+      <video class="cover-video" autoplay muted loop playsinline preload="auto">
+        <source src="assets/hero_video.MOV" type="video/quicktime">
+        <source src="assets/hero_video.MOV" type="video/mp4">
+        <source src="assets/hero_video.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="cover-scrim"></div>
+    <div class="cover-content">
+      <div class="cover-top fade" style="--d:0">UE424 — Life, Learning &amp; Leadership</div>
+
+      <div class="cover-bottom">
+        <h1 class="cover-title">
+          <span class="line"><span class="line-inner" style="--d:1">From Experience</span></span>
+          <span class="line"><span class="line-inner" style="--d:2">to <em>Insight.</em></span></span>
+        </h1>
+        <div class="cover-meta fade" style="--d:6">
+          <span>Skyline Trust Eye Clinic — Lahore, Pakistan</span>
+          <span class="dim">15 minutes · 9 patients · 16 hours of fieldwork</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 02 · CONTEXT ============ -->
+  <section class="slide slide-split" data-i="1">
+    <div class="image-half">
+      <img class="scale-in" src="assets/img1.jpeg" alt="Inside the clinic" />
+    </div>
+
+    <div class="text-half">
+      <h2 class="split-title">
+        <span class="line"><span class="line-inner" style="--d:0">A free clinic.</span></span>
+        <span class="line"><span class="line-inner" style="--d:1">Three roles.</span></span>
+        <span class="line"><span class="line-inner" style="--d:2"><em>Sixteen hours.</em></span></span>
+      </h2>
+
+      <div class="roles">
+        <div class="role fade" style="--d:6">
+          <h4>Haseeb Ur rehman</h4>
+          <p>Refraction &amp; abnormality screening with the doctor.</p>
+        </div>
+        <div class="role fade" style="--d:7">
+          <h4>Muhammad Ibrahim</h4>
+          <p>Consultation, intake &amp; follow-up.</p>
+        </div>
+        <div class="role fade" style="--d:8">
+          <h4>Eman Afrooz</h4>
+          <p>Vitals, screenings, dispensing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03 · BY THE NUMBERS (data anchor) ============ -->
+  <section class="slide slide-edge" data-i="2">
+    <h2 class="edge-headline display">
+      <span class="line"><span class="line-inner" style="--d:0">What 16 hours</span></span>
+      <span class="line"><span class="line-inner" style="--d:1">actually <em>showed us.</em></span></span>
+    </h2>
+
+    <div class="stats-grid">
+      <div class="stat fade" style="--d:5">
+        <span class="stat-label">Clinical find</span>
+        <span class="stat-value">60<span class="stat-unit">%</span></span>
+        <p class="stat-caption">vision lost in one eye — unknown to the patient until that day.</p>
+      </div>
+      <div class="stat fade" style="--d:6">
+        <span class="stat-label">The wait</span>
+        <span class="stat-value">2<span class="stat-unit">yrs</span></span>
+        <p class="stat-caption">the breadwinner&rsquo;s silent delay from first symptom to first visit.</p>
+      </div>
+      <div class="stat fade" style="--d:7">
+        <span class="stat-label">Co-morbidity</span>
+        <span class="stat-value">9<span class="stat-unit">/9</span></span>
+        <p class="stat-caption">screened with elevated BP or blood sugar — almost none knew.</p>
+      </div>
+      <div class="stat fade" style="--d:8">
+        <span class="stat-label">Awareness</span>
+        <span class="stat-value">0</span>
+        <p class="stat-caption">patients aware their diabetes was already attacking their eyes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 · ISSUE (edge-to-edge) ============ -->
+  <section class="slide slide-edge" data-i="3">
+    <h2 class="edge-headline display">
+      <span class="line"><span class="line-inner" style="--d:0">We expected</span></span>
+      <span class="line"><span class="line-inner" style="--d:1"><span class="light">a medical problem.</span></span></span>
+      <span class="line" style="margin-top:0.18em"><span class="line-inner" style="--d:3">We found a <em>perception</em></span></span>
+      <span class="line"><span class="line-inner" style="--d:4">problem.</span></span>
+    </h2>
+
+    <div class="three-layer">
+      <div class="layer fade" style="--d:8">
+        <span class="layer-num">01 — Patient → self</span>
+        <h3>Can&rsquo;t see what&rsquo;s wrong with them.</h3>
+        <p>Literal blind spots about their own bodies and conditions.</p>
+      </div>
+      <div class="layer fade" style="--d:9">
+        <span class="layer-num">02 — Patient → system</span>
+        <h3>Misread the institution.</h3>
+        <p>&ldquo;Free&rdquo; assumed to mean low quality — or quietly expensive.</p>
+      </div>
+      <div class="layer fade" style="--d:10">
+        <span class="layer-num">03 — System → patient</span>
+        <h3>Misread the human in front of them.</h3>
+        <p>A case to clear, not a frightened person to hear.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 · BIAS ============ -->
+  <section class="slide slide-split" data-i="4">
+    <div class="text-half">
+      <h2 class="split-title">
+        <span class="line"><span class="line-inner" style="--d:0">The breadwinner</span></span>
+        <span class="line"><span class="line-inner" style="--d:1">who waited</span></span>
+        <span class="line"><span class="line-inner" style="--d:2"><em>two years.</em></span></span>
+      </h2>
+
+      <blockquote class="pull-quote fade" style="--d:5">
+        &ldquo;I cannot stop working — my family depends on me. I didn&rsquo;t want to spend money on myself.&rdquo;
+      </blockquote>
+
+      <div class="bias-mini">
+        <div class="fade" style="--d:7">
+          <h5>In-group stereotype</h5>
+          <p>What a &ldquo;real provider&rdquo; does — and doesn&rsquo;t do.</p>
+        </div>
+        <div class="fade" style="--d:8">
+          <h5>Availability bias</h5>
+          <p>&ldquo;Hospitals always cost money&rdquo; — based on hearsay, not truth.</p>
+        </div>
+        <div class="fade" style="--d:9">
+          <h5>Self-stereotype</h5>
+          <p>&ldquo;Men endure; they don&rsquo;t seek help.&rdquo; A bias he didn&rsquo;t know he was carrying.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="image-half">
+      <img class="scale-in" src="assets/img2.jpeg" alt="Patient at consultation" />
+    </div>
+  </section>
+
+  <!-- ============ 06 · MOTIVATION (Why he waited) ============ -->
+  <section class="slide slide-edge" data-i="5">
+    <h2 class="edge-headline display">
+      <span class="line"><span class="line-inner" style="--d:0">Why he didn&rsquo;t come</span></span>
+      <span class="line"><span class="line-inner" style="--d:1">for <em>two years.</em></span></span>
+    </h2>
+
+    <div class="three-layer">
+      <div class="layer fade" style="--d:5">
+        <span class="layer-num">Lens 01 — Maslow&rsquo;s Hierarchy</span>
+        <h3>Physiological needs outrank safety.</h3>
+        <p>When food and income aren&rsquo;t guaranteed, untreated illness becomes the price of survival.</p>
+      </div>
+      <div class="layer fade" style="--d:6">
+        <span class="layer-num">Lens 02 — Intrinsic vs. Extrinsic</span>
+        <h3>Family duty drowned out self-care.</h3>
+        <p>The pull to provide overpowered the pull to heal. The provider role became a cage.</p>
+      </div>
+      <div class="layer fade" style="--d:7">
+        <span class="layer-num">Lens 03 — Self-Determination</span>
+        <h3>Autonomy, competence, relatedness — all denied.</h3>
+        <p>He couldn&rsquo;t take time off. He didn&rsquo;t understand the disease. The system felt foreign.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 07 · JOHARI ============ -->
+  <section class="slide slide-split" data-i="6">
+    <div class="text-half">
+      <h2 class="split-title">
+        <span class="line"><span class="line-inner" style="--d:0">The patient</span></span>
+        <span class="line"><span class="line-inner" style="--d:1">who couldn&rsquo;t see</span></span>
+        <span class="line"><span class="line-inner" style="--d:2"><em>himself.</em></span></span>
+      </h2>
+
+      <p class="johari-caption fade" style="--d:5">
+        Refraction revealed a <b>60% loss of vision</b> in one eye. He had no idea — only one question:
+        <em>&ldquo;How is this linked to my sugar?&rdquo;</em> The clinic&rsquo;s most powerful intervention wasn&rsquo;t the medicine. It was the moment of feedback.
+      </p>
+    </div>
+
+    <div class="text-half" style="padding-left: 0;">
+      <div class="johari-grid fade" style="--d:4">
+        <div class="cell">
+          <div class="axes">Known to self · Known to others</div>
+          <h4>Open</h4>
+        </div>
+        <div class="cell invert">
+          <div class="axes">Unknown to self · Known to others</div>
+          <div>
+            <h4>Blind</h4>
+            <div class="cell-arrow">— He lived here.</div>
+          </div>
+        </div>
+        <div class="cell">
+          <div class="axes">Known to self · Unknown to others</div>
+          <h4>Hidden</h4>
+        </div>
+        <div class="cell">
+          <div class="axes">Unknown to self · Unknown to others</div>
+          <h4>Unknown</h4>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 08 · COMMUNICATION ============ -->
+  <section class="slide slide-split" data-i="7">
+    <div class="image-half">
+      <img class="scale-in" src="assets/img3.jpeg" alt="Communication moment" />
+    </div>
+
+    <div class="text-half">
+      <h2 class="split-title">
+        <span class="line"><span class="line-inner" style="--d:0">Same words.</span></span>
+        <span class="line"><span class="line-inner" style="--d:1"><em>Different outcome.</em></span></span>
+      </h2>
+
+      <div class="comm-flow">
+        <div class="node fade" style="--d:5">
+          <span class="node-step">01 — Sender</span>
+          <h4>The clinical staff</h4>
+          <p>Rushed, technical, low affect — competent, but emotionally guarded.</p>
+        </div>
+        <div class="node invert fade" style="--d:6">
+          <span class="node-step">02 — Channel</span>
+          <h4>The clinic itself</h4>
+          <p>Crowded room. No privacy. Time pressure. Fear. Low health-literacy.</p>
+        </div>
+        <div class="node fade" style="--d:7">
+          <span class="node-step">03 — Receiver</span>
+          <h4>The patient</h4>
+          <p>Anxious, culturally guarded, hearing about their body for the first time.</p>
+        </div>
+      </div>
+
+      <p class="kicker fade" style="--d:10">
+        Almost every patient we tested had high BP or sugar — and almost none of them <em>knew</em>. In healthcare, <em>delivery is the message.</em>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 09 · ETHICS (edge-to-edge) ============ -->
+  <section class="slide slide-edge" data-i="8">
+    <h2 class="edge-headline display">
+      <span class="line"><span class="line-inner" style="--d:0">Three lenses.</span></span>
+      <span class="line"><span class="line-inner" style="--d:1">One <em>clinic.</em></span></span>
+    </h2>
+
+    <div class="ethics-table">
+      <div class="ethics-row fade" style="--d:5">
+        <span class="lens">Utilitarian</span>
+        <span class="desc">Greatest good for the greatest number — free care, mass screening, real impact at scale.</span>
+        <span class="verdict">Strong.</span>
+      </div>
+      <div class="ethics-row fade" style="--d:6">
+        <span class="lens">Rights-based</span>
+        <span class="desc">Each person&rsquo;s dignity &amp; autonomy. Treated, yes — but not always heard, rarely understood.</span>
+        <span class="verdict">Mixed.</span>
+      </div>
+      <div class="ethics-row weak fade" style="--d:7">
+        <span class="lens"><em>Virtue</em></span>
+        <span class="desc">Character — empathy, compassion, patience. Not unkind, but emotionally guarded.</span>
+        <span class="verdict">Weak.</span>
+      </div>
+    </div>
+
+    <p class="ethics-kicker fade" style="--d:10">
+      The clinic is <em>utilitarian-strong, virtue-weak.</em> Optimize purely for numbers, and you can erode the very humanity that made the mission worth pursuing.
+    </p>
+  </section>
+
+  <!-- ============ 10 · LEADERSHIP (edge-to-edge) ============ -->
+  <section class="slide slide-edge" data-i="9">
+    <h2 class="edge-headline display">
+      <span class="line"><span class="line-inner" style="--d:0">From observation</span></span>
+      <span class="line"><span class="line-inner" style="--d:1">to <em>action.</em></span></span>
+    </h2>
+
+    <div class="actions">
+      <article class="action fade" style="--d:5">
+        <header class="action-head">
+          <div class="action-step">Goal 01</div>
+          <h3>Empathy as a <em>clinical skill.</em></h3>
+        </header>
+        <div class="kpi-stat">
+          <span class="kpi-value">&ge;&thinsp;85<span class="kpi-unit">%</span></span>
+          <p class="kpi-caption">of patients report they &ldquo;felt heard.&rdquo;</p>
+        </div>
+        <p class="action-detail">Three communication workshops in 90 days. Raise the bar from &ldquo;treat the patient&rdquo; to &ldquo;make them feel seen.&rdquo;</p>
+      </article>
+
+      <article class="action fade" style="--d:6">
+        <header class="action-head">
+          <div class="action-step">Goal 02</div>
+          <h3>Shrink the <em>blind quadrant.</em></h3>
+        </header>
+        <div class="kpi-stat">
+          <span class="kpi-value">100<span class="kpi-unit">%</span></span>
+          <p class="kpi-caption">Urdu summary delivery by end of Q2.</p>
+        </div>
+        <p class="action-detail">One-page Urdu summary for every patient. Awareness leaves the room with the person, not the chart.</p>
+      </article>
+
+      <article class="action fade" style="--d:7">
+        <header class="action-head">
+          <div class="action-step">Goal 03</div>
+          <h3>Catch it <em>earlier.</em></h3>
+        </header>
+        <div class="kpi-stat">
+          <span class="kpi-value">100<span class="kpi-unit">%</span></span>
+          <p class="kpi-caption">screened for BP &amp; sugar at every visit.</p>
+        </div>
+        <p class="action-detail">No exceptions. Most of the eye damage we saw was downstream of uncontrolled diabetes.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ 11 · BLIND QUADRANT (Personal Growth) ============ -->
+  <section class="slide slide-edge" data-i="10">
+    <h2 class="edge-headline display">
+      <span class="line"><span class="line-inner" style="--d:0">What was in our own</span></span>
+      <span class="line"><span class="line-inner" style="--d:1"><em>blind quadrant.</em></span></span>
+    </h2>
+
+    <div class="growth-grid">
+      <div class="growth fade" style="--d:5">
+        <span class="growth-tag">Gamma</span>
+        <p class="growth-before">&ldquo;Leadership begins with action.&rdquo;</p>
+        <h3>It begins with <em>awareness</em> — of patients&rsquo; blind spots, and our own.</h3>
+      </div>
+      <div class="growth fade" style="--d:6">
+        <span class="growth-tag">Member 2</span>
+        <p class="growth-before">&ldquo;Bias is loud and visible.&rdquo;</p>
+        <h3>Sometimes it&rsquo;s a story <em>whispered</em> for two years.</h3>
+      </div>
+      <div class="growth fade" style="--d:7">
+        <span class="growth-tag">Member 3</span>
+        <p class="growth-before">&ldquo;Empathy is a personality trait.&rdquo;</p>
+        <h3>It&rsquo;s a <em>clinical skill</em> — measurable, trainable.</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 12 · CLOSE (edge-to-edge) ============ -->
+  <section class="slide slide-edge" data-i="11">
+    <h2 class="close-headline display edge-padding-x" style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+      <span class="line"><span class="line-inner" style="--d:0">Awareness</span></span>
+      <span class="line"><span class="line-inner" style="--d:1">is where</span></span>
+      <span class="line"><span class="line-inner" style="--d:2">leadership <em>begins.</em></span></span>
+    </h2>
+
+    <div class="close-foot">
+      <p class="signoff fade" style="--d:6">
+        We went into Skyline expecting to help patients. We came out aware that the system itself needed help — and that anyone, including us, can choose to <em>lead from where we stand.</em>
+      </p>
+      <span class="thanks fade" style="--d:8">Thank you.</span>
+    </div>
+  </section>
+
+</main>
+
+<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+
+<script>
+  (function () {
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const total = slides.length;
+    const counter = document.getElementById('counter');
+    const progressBar = document.getElementById('progressBar');
+    let current = 0;
+    let lock = false;
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function updateChrome() {
+      counter.textContent = pad(current + 1) + ' / ' + pad(total);
+      progressBar.style.width = ((current + 1) / total * 100) + '%';
+    }
+
+    function go(to) {
+      to = Math.max(0, Math.min(total - 1, to));
+      if (to === current || lock) return;
+      lock = true;
+      slides[current].classList.remove('active');
+      current = to;
+      void slides[current].offsetWidth;
+      slides[current].classList.add('active');
+      updateChrome();
+      setTimeout(() => { lock = false; }, 280);
+    }
+
+    function next() { go(current + 1); }
+    function prev() { go(current - 1); }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        (document.documentElement.requestFullscreen ||
+         document.documentElement.webkitRequestFullscreen ||
+         function () {}).call(document.documentElement);
+      } else {
+        (document.exitFullscreen ||
+         document.webkitExitFullscreen ||
+         function () {}).call(document);
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      switch (e.key) {
+        case 'ArrowRight':
+        case 'PageDown':
+        case ' ':
+        case 'Spacebar':
+        case 'ArrowDown':
+          e.preventDefault(); next(); break;
+        case 'ArrowLeft':
+        case 'PageUp':
+        case 'ArrowUp':
+          e.preventDefault(); prev(); break;
+        case 'Home':
+          e.preventDefault(); go(0); break;
+        case 'End':
+          e.preventDefault(); go(total - 1); break;
+        case 'f':
+        case 'F':
+          e.preventDefault(); toggleFullscreen(); break;
+      }
+    });
+
+    document.getElementById('deck').addEventListener('click', (e) => {
+      if (e.target.closest('a')) return;
+      const x = e.clientX;
+      if (x < window.innerWidth * 0.32) prev();
+      else next();
+    });
+
+    let tx = 0;
+    window.addEventListener('touchstart', (e) => { tx = e.touches[0].clientX; }, { passive: true });
+    window.addEventListener('touchend', (e) => {
+      const dx = (e.changedTouches[0].clientX) - tx;
+      if (Math.abs(dx) > 50) (dx < 0 ? next : prev)();
+    }, { passive: true });
+
+    updateChrome();
+  })();
+</script>
+</body>
+</html>

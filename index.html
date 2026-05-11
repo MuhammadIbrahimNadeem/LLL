@@ -254,6 +254,17 @@
     background:
       linear-gradient(180deg, rgba(14, 12, 10, 0.20) 0%, rgba(14, 12, 10, 0.10) 50%, rgba(14, 12, 10, 0.30) 100%);
   }
+  .img-placeholder {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #d8d4cb;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='%23a8a39a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><rect x='8' y='12' width='48' height='40' rx='3'/><circle cx='22' cy='26' r='4'/><path d='M8 44l14-14 12 12 8-8 14 14'/></svg>");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: clamp(48px, 8vw, 96px);
+  }
   .text-half {
     padding: var(--pad-y) var(--pad-x);
     display: flex;
@@ -761,13 +772,7 @@
 
   <!-- ============ 01 · COVER (full-bleed video) ============ -->
   <section class="slide slide-cover active" data-i="0">
-    <div class="cover-video-wrap">
-      <video class="cover-video" autoplay muted loop playsinline preload="auto">
-        <source src="assets/hero_video.MOV" type="video/quicktime">
-        <source src="assets/hero_video.MOV" type="video/mp4">
-        <source src="assets/hero_video.mp4" type="video/mp4">
-      </video>
-    </div>
+    <div class="cover-video-wrap" style="background: #000;"></div>
     <div class="cover-scrim"></div>
     <div class="cover-content">
       <div class="cover-top fade" style="--d:0">UE424 — Life, Learning &amp; Leadership</div>
@@ -788,7 +793,7 @@
   <!-- ============ 02 · CONTEXT ============ -->
   <section class="slide slide-split" data-i="1">
     <div class="image-half">
-      <img class="scale-in" src="assets/img1.jpeg" alt="Inside the clinic" />
+      <div class="img-placeholder scale-in" role="img" aria-label="Inside the clinic"></div>
     </div>
 
     <div class="text-half">
@@ -904,7 +909,7 @@
     </div>
 
     <div class="image-half">
-      <img class="scale-in" src="assets/img2.jpeg" alt="Patient at consultation" />
+      <div class="img-placeholder scale-in" role="img" aria-label="Patient at consultation"></div>
     </div>
   </section>
 
@@ -977,7 +982,7 @@
   <!-- ============ 08 · COMMUNICATION ============ -->
   <section class="slide slide-split" data-i="7">
     <div class="image-half">
-      <img class="scale-in" src="assets/img3.jpeg" alt="Communication moment" />
+      <div class="img-placeholder scale-in" role="img" aria-label="Communication moment"></div>
     </div>
 
     <div class="text-half">

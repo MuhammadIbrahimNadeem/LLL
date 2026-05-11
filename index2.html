@@ -1054,26 +1054,36 @@
         </section>
 
         <!-- ============ 03 · BY THE NUMBERS (data anchor) ============ -->
-        <section class="slide slide-edge" data-i="2">
-            <h2 class="edge-headline display" style="flex: 0 1 auto; padding-bottom: clamp(20px, 3vh, 36px);">
-                <span class="line"><span class="line-inner" style="--d:0">What 16 hours</span></span>
-                <span class="line"><span class="line-inner" style="--d:1">actually <em>showed us.</em></span></span>
-            </h2>
+        <section class="slide slide-edge" data-i="2" style="padding-top: var(--pad-y);">
+            <div style="display: grid; grid-template-columns: 1fr minmax(260px, 32%); gap: clamp(24px, 4vw, 64px); padding: 0 var(--pad-x) clamp(20px, 3vh, 36px); flex: 0 0 50%; align-items: start;">
+                <h2 class="display" style="font-size: clamp(48px, 7vw, 120px); line-height: 0.94; letter-spacing: -0.045em; font-weight: 500;">
+                    <span class="line"><span class="line-inner" style="--d:0">What 16 hours</span></span>
+                    <span class="line"><span class="line-inner" style="--d:1">actually <em>showed us.</em></span></span>
+                </h2>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr clamp(160px, 18vw, 240px); gap: 0; align-items: stretch; border-top: 1px solid var(--fg); border-bottom: 1px solid var(--fg); flex: 1;">
-                <div class="stat fade" style="--d:5; min-height: 0;">
-                    <span class="stat-label">Co-morbidity</span>
-                    <span class="stat-value">9<span class="stat-unit">/9</span></span>
-                    <p class="stat-caption">patients screened with elevated BP or blood sugar &mdash; almost none knew before that day.</p>
+                <div style="display: flex; flex-direction: column; gap: clamp(18px, 2.4vh, 28px); border-top: 1px solid var(--fg); border-bottom: 1px solid var(--fg); padding: clamp(18px, 2.4vh, 28px) 0;">
+                    <div class="stat fade" style="--d:5; min-height: 0; padding: 0; border-right: none; gap: 6px;">
+                        <span class="stat-label">Co-morbidity</span>
+                        <span class="stat-value" style="font-size: clamp(48px, 5vw, 92px); margin-top: 0;">9<span class="stat-unit">/9</span></span>
+                        <p class="stat-caption" style="margin-top: 2px;">patients screened with elevated BP or blood sugar &mdash; almost none knew before that day.</p>
+                    </div>
+                    <div class="stat fade" style="--d:6; min-height: 0; padding: 0; border-right: none; border-top: 1px solid var(--line-strong); padding-top: clamp(18px, 2.4vh, 28px); gap: 6px;">
+                        <span class="stat-label">Awareness gap</span>
+                        <span class="stat-value" style="font-size: clamp(48px, 5vw, 92px); margin-top: 0;">0<span class="stat-unit">%</span></span>
+                        <p class="stat-caption" style="margin-top: 2px;">of diabetic patients knew the disease was already damaging their eyes &mdash; a 100% awareness gap.</p>
+                    </div>
                 </div>
-                <div class="stat fade" style="--d:6; min-height: 0;">
-                    <span class="stat-label">Awareness gap</span>
-                    <span class="stat-value">0<span class="stat-unit">%</span></span>
-                    <p class="stat-caption">of diabetic patients knew the disease was already damaging their eyes &mdash; a 100% awareness gap.</p>
+            </div>
+
+            <div class="fade" style="--d:7; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; flex: 1; min-height: 0; border-top: 1px solid var(--fg);">
+                <div style="position: relative; overflow: hidden; background: var(--bg-deep);">
+                    <img src="assets/cr1.jpeg" alt="Consultant Room sign" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top;" />
                 </div>
-                <div class="fade" style="--d:7; position: relative; overflow: hidden; background: var(--bg-deep); border-right: none;">
-                    <img src="assets/img6.jpeg" alt="A patient at the clinic" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 22%; filter: grayscale(1) contrast(1.1) brightness(0.9);" />
-                    <div style="position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(14,12,10,0.25) 0%, rgba(14,12,10,0.10) 50%, rgba(14,12,10,0.55) 100%);"></div>
+                <div style="position: relative; overflow: hidden; background: var(--bg-deep);">
+                    <img src="assets/cr2.jpeg" alt="Refrection Room sign with Room #2 taped beneath" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top;" />
+                </div>
+                <div style="position: relative; overflow: hidden; background: var(--bg-deep);">
+                    <img src="assets/cr3.jpeg" alt="Refrection Room sign with Room #2 taped beneath" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top;" />
                 </div>
             </div>
         </section>

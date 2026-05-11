@@ -994,7 +994,7 @@
 
 <body>
 
-    <div class="counter" id="counter">01 / 15</div>
+    <div class="counter" id="counter">01 / 16</div>
 
     <main class="deck" id="deck">
 
@@ -1088,9 +1088,9 @@
             </div>
         </section>
 
-        <!-- ============ 04 · ISSUE (edge-to-edge) ============ -->
+        <!-- ============ 04a · ISSUE — HEADLINE ============ -->
         <section class="slide slide-edge" data-i="3">
-            <h2 class="edge-headline display">
+            <h2 class="edge-headline display" style="flex: 1; justify-content: center;">
                 <span class="line"><span class="line-inner" style="--d:0">We expected</span></span>
                 <span class="line"><span class="line-inner" style="--d:1"><span class="light">a medical
                             problem.</span></span></span>
@@ -1098,22 +1098,25 @@
                         <em>perception</em></span></span>
                 <span class="line"><span class="line-inner" style="--d:4">problem.</span></span>
             </h2>
+        </section>
 
-            <div class="three-layer">
-                <div class="layer fade" style="--d:8">
-                    <span class="layer-num">01 — Patient → self</span>
-                    <h3>Can&rsquo;t see what&rsquo;s wrong with them.</h3>
-                    <p>Literal blind spots about their own bodies and conditions.</p>
+        <!-- ============ 04b · ISSUE — THREE LAYERS ============ -->
+        <section class="slide slide-edge" data-i="3" style="justify-content: center;">
+            <div class="three-layer" style="flex: 1; border-top: none; align-items: stretch;">
+                <div class="layer fade" style="--d:0; justify-content: center; gap: clamp(14px, 2vh, 22px);">
+                    <span class="layer-num" style="font-size: 13px; letter-spacing: 0.04em;">01 — Patient → self</span>
+                    <h3 style="font-size: clamp(28px, 3vw, 52px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05;">Can&rsquo;t see what&rsquo;s wrong with them.</h3>
+                    <p style="font-size: clamp(15px, 1.15vw, 18px); line-height: 1.5; color: var(--fg-mid);">Literal blind spots about their own bodies and conditions.</p>
                 </div>
-                <div class="layer fade" style="--d:9">
-                    <span class="layer-num">02 — Patient → system</span>
-                    <h3>Misread the institution.</h3>
-                    <p>&ldquo;Free&rdquo; assumed to mean low quality — or quietly expensive.</p>
+                <div class="layer fade" style="--d:1; justify-content: center; gap: clamp(14px, 2vh, 22px);">
+                    <span class="layer-num" style="font-size: 13px; letter-spacing: 0.04em;">02 — Patient → system</span>
+                    <h3 style="font-size: clamp(28px, 3vw, 52px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05;">Misread the <em>institution.</em></h3>
+                    <p style="font-size: clamp(15px, 1.15vw, 18px); line-height: 1.5; color: var(--fg-mid);">&ldquo;Free&rdquo; assumed to mean low quality — or quietly expensive.</p>
                 </div>
-                <div class="layer fade" style="--d:10">
-                    <span class="layer-num">03 — System → patient</span>
-                    <h3>Misread the human in front of them.</h3>
-                    <p>A case to clear, not a frightened person to hear.</p>
+                <div class="layer fade" style="--d:2; justify-content: center; gap: clamp(14px, 2vh, 22px);">
+                    <span class="layer-num" style="font-size: 13px; letter-spacing: 0.04em;">03 — System → patient</span>
+                    <h3 style="font-size: clamp(28px, 3vw, 52px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05;">Misread the <em>human</em> in front of them.</h3>
+                    <p style="font-size: clamp(15px, 1.15vw, 18px); line-height: 1.5; color: var(--fg-mid);">A case to clear, not a frightened person to hear.</p>
                 </div>
             </div>
         </section>

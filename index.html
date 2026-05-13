@@ -1,1224 +1,1824 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>From Experience to Insight — Skyline Trust, Lahore</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>PSX Portfolio — Business Finance</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #f6f3ec;
-    --bg-deep: #efece4;
-    --fg: #0e0c0a;
-    --fg-soft: #26241f;
-    --fg-mid: #524d44;
-    --fg-dim: #8a857c;
-    --fg-faint: #c4bfb5;
-    --line: rgba(14, 12, 10, 0.10);
-    --line-strong: rgba(14, 12, 10, 0.20);
-    --pad-x: clamp(32px, 4vw, 72px);
-    --pad-y: clamp(36px, 5vh, 72px);
-    --ease: cubic-bezier(0.16, 1, 0.3, 1);
-    --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
-  }
+:root {
+  --purple: #5B3FE8;
+  --purple-light: #EAE6FF;
+  --white: #FFFFFF;
+  --black: #0D0D0D;
+  --g50:  #FAFAFA;
+  --g100: #F4F4F4;
+  --g200: #E8E8E8;
+  --g300: #D0D0D0;
+  --g400: #B0B0B0;
+  --g500: #888888;
+  --g700: #444444;
+  --px: clamp(48px, 6vw, 100px);
+  --py: clamp(40px, 5.5vh, 80px);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-s: cubic-bezier(0.4, 0, 0.2, 1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; width: 100%; overflow: hidden; }
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: var(--white);
+  color: var(--black);
+  -webkit-font-smoothing: antialiased;
+  font-size: 14px;
+  line-height: 1.5;
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-  }
-  body {
-    font-family: "Instrument Sans", system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--fg);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-  }
+/* ─── chrome ─── */
+.pg-counter {
+  position: fixed; top: 22px; right: var(--px);
+  font-size: 11px; letter-spacing: 0.08em; color: var(--g400);
+  font-variant-numeric: tabular-nums; pointer-events: none; z-index: 60;
+}
+.prog { position: fixed; bottom: 0; left: 0; right: 0; height: 2px; background: var(--g200); z-index: 70; }
+.prog-bar { height: 100%; background: var(--purple); width: 0; transition: width 0.9s var(--ease); }
 
-  /* ===== Persistent chrome ===== */
-  .counter {
-    position: fixed;
-    top: 22px;
-    right: var(--pad-x);
-    z-index: 60;
-    font-size: 12px;
-    letter-spacing: 0.04em;
-    color: var(--fg-dim);
-    font-variant-numeric: tabular-nums;
-    pointer-events: none;
-    mix-blend-mode: difference;
-    color: #aeaaa3;
-  }
-  .progress {
-    position: fixed; left: 0; right: 0; bottom: 0;
-    height: 1px;
-    background: rgba(14, 12, 10, 0.06);
-    z-index: 70;
-  }
-  .progress-bar {
-    height: 100%;
-    background: var(--fg);
-    width: 0;
-    transition: width 0.9s var(--ease);
-  }
+/* ─── deck ─── */
+.deck { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+.slide {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.45s var(--ease-s);
+  overflow: hidden;
+}
+.slide.active { opacity: 1; pointer-events: auto; }
 
-  /* ===== Deck ===== */
-  .deck {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background: var(--bg);
-  }
+/* ─── animations ─── */
+.ln { display: block; overflow: hidden; }
+.ln-i { display: block; transform: translateY(108%); will-change: transform; }
+.slide.active .ln-i {
+  animation: rev 1.05s var(--ease) both;
+  animation-delay: calc(var(--d, 0) * 70ms + 180ms);
+}
+@keyframes rev { from { transform: translateY(108%) } to { transform: translateY(0) } }
 
-  .slide {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.55s var(--ease-soft);
-    overflow: hidden;
-  }
-  .slide.active {
-    opacity: 1;
-    pointer-events: auto;
-  }
+.fd { opacity: 0; transform: translateY(10px); }
+.slide.active .fd {
+  animation: fdup 0.85s var(--ease) both;
+  animation-delay: calc(var(--d, 0) * 70ms + 420ms);
+}
+@keyframes fdup { from { opacity:0; transform:translateY(10px) } to { opacity:1; transform:translateY(0) } }
 
-  /* ===== Reveal animations (fill-mode: both, end state persists) ===== */
-  .line {
-    display: block;
-    overflow: hidden;
-    padding: 0.06em 0.04em;
-    margin: -0.06em -0.04em;
-  }
-  .line-inner {
-    display: block;
-    transform: translateY(115%);
-    will-change: transform;
-  }
-  .slide.active .line-inner {
-    animation: reveal 1.15s var(--ease) both;
-    animation-delay: calc(var(--d, 0) * 80ms + 240ms);
-  }
-  @keyframes reveal {
-    from { transform: translateY(115%); }
-    to   { transform: translateY(0); }
-  }
+/* ─── typography ─── */
+.display {
+  font-size: clamp(52px, 8vw, 140px);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+  color: var(--black);
+}
+.display em { font-style: italic; color: var(--purple); font-weight: 600; }
 
-  .fade {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  .slide.active .fade {
-    animation: fadeUp 1s var(--ease) both;
-    animation-delay: calc(var(--d, 0) * 80ms + 560ms);
-  }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+.h2 {
+  font-size: clamp(30px, 3.8vw, 60px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  color: var(--black);
+}
+.h2 em { font-style: italic; color: var(--purple); font-weight: 600; }
 
-  .scale-in {
-    transform: scale(1.06);
-    opacity: 0.85;
-  }
-  .slide.active .scale-in {
-    animation: scaleIn 1.6s var(--ease) both;
-    animation-delay: 100ms;
-  }
-  @keyframes scaleIn {
-    from { transform: scale(1.06); opacity: 0.85; }
-    to   { transform: scale(1); opacity: 1; }
-  }
+.label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--purple);
+}
 
-  /* ===== Typography ===== */
-  .display {
-    font-family: "Instrument Sans", sans-serif;
-    font-weight: 500;
-    letter-spacing: -0.04em;
-    line-height: 0.92;
-    color: var(--fg);
-  }
-  .display em {
-    font-style: italic;
-    font-weight: 500;
-  }
+.body-text {
+  font-size: clamp(13px, 1.1vw, 15px);
+  line-height: 1.65;
+  color: var(--g700);
+}
 
-  /* ============ 01 · COVER (full-bleed video) ============ */
-  .slide-cover { padding: 0; }
-  .cover-video-wrap {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #14110d;
-  }
-  .cover-video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: contrast(1.05) saturate(0.7) brightness(0.92);
-  }
-  .slide-cover.active .cover-video {
-    animation: heroZoom 24s var(--ease-soft) both;
-  }
-  @keyframes heroZoom {
-    from { transform: scale(1.06); }
-    to   { transform: scale(1.18); }
-  }
-  .cover-scrim {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(120% 90% at 50% 50%, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.55) 100%),
-      linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.30) 35%, rgba(0,0,0,0.35) 60%, rgba(0,0,0,0.78) 100%);
-    z-index: 2;
-  }
-  .cover-content {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    padding: var(--pad-y) var(--pad-x);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    color: #ffffff;
-  }
-  .cover-top {
-    font-size: 13px;
-    letter-spacing: 0.04em;
-    color: rgba(255,255,255,0.85);
-  }
-  .cover-title {
-    font-size: clamp(64px, 10vw, 180px);
-    font-weight: 500;
-    letter-spacing: -0.045em;
-    line-height: 0.9;
-    color: #ffffff;
-    max-width: 14ch;
-  }
-  .cover-title em {
-    font-style: italic;
-    font-weight: 500;
-  }
-  .cover-bottom {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
-  .cover-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    font-size: 13px;
-    line-height: 1.55;
-    color: rgba(255,255,255,0.85);
-  }
-  .cover-meta .dim { color: rgba(255,255,255,0.6); }
+/* ─── layout helpers ─── */
+.pad { padding: var(--py) var(--px); }
+.col-2 { display: grid; grid-template-columns: 1fr 1fr; height: 100%; }
+.col-left {
+  padding: var(--py) var(--px);
+  display: flex; flex-direction: column; justify-content: center;
+  border-right: 1px solid var(--g200);
+}
+.col-right {
+  padding: var(--py) var(--px);
+  display: flex; flex-direction: column; justify-content: center;
+  overflow: auto;
+}
+.s-full {
+  padding: var(--py) var(--px);
+  display: flex; flex-direction: column;
+  height: 100%;
+}
 
-  /* ============ 02 · CONTEXT (50/50 image + text) ============ */
-  .slide-split {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-  .image-half {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: var(--bg-deep);
-  }
-  .image-half img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(0.4) contrast(1.05) saturate(0.78) brightness(0.92);
-  }
-  .image-half::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    background:
-      linear-gradient(180deg, rgba(14, 12, 10, 0.20) 0%, rgba(14, 12, 10, 0.10) 50%, rgba(14, 12, 10, 0.30) 100%);
-  }
-  .img-placeholder {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #d8d4cb;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='%23a8a39a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><rect x='8' y='12' width='48' height='40' rx='3'/><circle cx='22' cy='26' r='4'/><path d='M8 44l14-14 12 12 8-8 14 14'/></svg>");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: clamp(48px, 8vw, 96px);
-  }
-  .text-half {
-    padding: var(--pad-y) var(--pad-x);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: clamp(28px, 4vh, 56px);
-    overflow: hidden;
-  }
-  .split-title {
-    font-size: clamp(48px, 6vw, 96px);
-    line-height: 0.94;
-    letter-spacing: -0.04em;
-    font-weight: 500;
-  }
-  .split-title em { font-style: italic; }
+/* ─── rule ─── */
+.rule { width: 100%; height: 1px; background: var(--g200); }
+.rule-black { width: 100%; height: 1px; background: var(--black); }
 
-  .roles {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    padding-top: 22px;
-    border-top: 1px solid var(--line-strong);
-  }
-  .role h4 {
-    font-family: inherit;
-    font-weight: 600;
-    font-size: 13.5px;
-    letter-spacing: -0.005em;
-    color: var(--fg);
-    margin-bottom: 6px;
-  }
-  .role p {
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--fg-mid);
-  }
+/* ─── section tag ─── */
+.sec-tag {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--g400);
+  margin-bottom: 20px; display: block;
+}
 
-  /* ============ 03 · ISSUE (edge-to-edge) ============ */
-  .slide-edge {
-    display: flex;
-    flex-direction: column;
-    padding: var(--pad-y) 0 0 0;
-    height: 100%;
-  }
-  .edge-padding-x { padding: 0 var(--pad-x); }
-  .edge-headline {
-    padding: 0 var(--pad-x);
-    font-size: clamp(64px, 9.4vw, 180px);
-    line-height: 0.93;
-    letter-spacing: -0.045em;
-    font-weight: 500;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .edge-headline em { font-style: italic; }
-  .edge-headline .light { font-weight: 400; color: var(--fg-mid); }
+/* ─── table ─── */
+.tbl { width: 100%; border-collapse: collapse; }
+.tbl th {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--g500);
+  padding: 0 16px 10px 0;
+  text-align: left; border-bottom: 1px solid var(--g300);
+  white-space: nowrap;
+}
+.tbl th.r { text-align: right; }
+.tbl td {
+  padding: 9px 16px 9px 0;
+  border-bottom: 1px solid var(--g100);
+  color: var(--black);
+  font-size: clamp(11px, 0.85vw, 13px);
+  vertical-align: middle;
+}
+.tbl td.r { text-align: right; font-variant-numeric: tabular-nums; }
+.tbl td.dim { color: var(--g500); }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr.hl td { background: var(--purple-light); }
+.tbl tr.hl-top td { border-top: 1px solid var(--g300); font-weight: 600; }
+.tbl .mono { font-variant-numeric: tabular-nums; font-size: 0.95em; }
+/* positive / negative plain text — no colour by default */
+.pos { color: #1a6b3a; }
+.neg { color: #8b1a1a; }
+.purple-text { color: var(--purple); font-weight: 600; }
 
-  .three-layer {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    border-top: 1px solid var(--line-strong);
-  }
-  .layer {
-    padding: clamp(20px, 3vh, 32px) clamp(20px, 2.4vw, 36px);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    border-right: 1px solid var(--line);
-  }
-  .layer:last-child { border-right: none; }
-  .layer-num {
-    font-size: 12px;
-    color: var(--fg-dim);
-    font-variant-numeric: tabular-nums;
-  }
-  .layer h3 {
-    font-family: inherit;
-    font-size: clamp(17px, 1.4vw, 22px);
-    font-weight: 500;
-    letter-spacing: -0.022em;
-    line-height: 1.18;
-    color: var(--fg);
-  }
-  .layer p {
-    font-size: 13.5px;
-    line-height: 1.55;
-    color: var(--fg-mid);
-  }
+/* ─── stat block ─── */
+.stat-row { display: grid; gap: 0; }
+.stat-item {
+  padding: clamp(18px, 2.5vh, 32px) 0;
+  border-bottom: 1px solid var(--g200);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.stat-item:last-child { border-bottom: none; }
+.stat-num {
+  font-size: clamp(40px, 5vw, 80px);
+  font-weight: 700; letter-spacing: -0.05em; line-height: 1;
+  color: var(--black);
+}
+.stat-num.purple { color: var(--purple); }
+.stat-cap { font-size: 12px; color: var(--g500); line-height: 1.5; }
 
-  /* ============ 04 · BIAS (50/50, simpler) ============ */
-  .pull-quote {
-    font-style: italic;
-    font-weight: 400;
-    font-size: clamp(18px, 1.5vw, 24px);
-    line-height: 1.4;
-    color: var(--fg-soft);
-    border-left: 1px solid var(--fg);
-    padding: 6px 0 6px 20px;
-    max-width: 36ch;
-  }
-  .bias-mini {
-    display: flex;
-    flex-direction: column;
-    border-top: 1px solid var(--line-strong);
-  }
-  .bias-mini > div {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 24px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--line);
-    font-size: 13.5px;
-    line-height: 1.5;
-    color: var(--fg-mid);
-  }
-  .bias-mini h5 {
-    font-family: inherit;
-    font-weight: 600;
-    font-size: 13.5px;
-    color: var(--fg);
-  }
+/* ─── bar ─── */
+.bar-wrap { display: flex; flex-direction: column; gap: 8px; }
+.bar-row { display: grid; grid-template-columns: 52px 1fr 44px; align-items: center; gap: 10px; }
+.bar-label { font-size: 11px; font-weight: 600; color: var(--black); }
+.bar-track { height: 8px; background: var(--g100); border-radius: 2px; overflow: hidden; }
+.bar-fill { height: 100%; background: var(--purple); border-radius: 2px; }
+.bar-fill.lt { background: var(--g300); }
+.bar-val { font-size: 11px; color: var(--g500); text-align: right; font-variant-numeric: tabular-nums; }
 
-  /* ============ 05 · JOHARI (50/50: title + grid) ============ */
-  .johari-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    border: 1px solid var(--line-strong);
-    width: 100%;
-    aspect-ratio: 1.4 / 1;
-    max-height: 70vh;
-    margin: auto 0;
-  }
-  .cell {
-    padding: clamp(20px, 2.4vw, 32px);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border-right: 1px solid var(--line-strong);
-    border-bottom: 1px solid var(--line-strong);
-    background: var(--bg);
-  }
-  .cell:nth-child(2n) { border-right: none; }
-  .cell:nth-child(n+3) { border-bottom: none; }
-  .cell h4 {
-    font-family: inherit;
-    font-weight: 500;
-    font-size: clamp(22px, 2.2vw, 36px);
-    letter-spacing: -0.03em;
-    color: var(--fg);
-  }
-  .cell .axes {
-    font-size: 11.5px;
-    color: var(--fg-dim);
-    line-height: 1.5;
-  }
-  .cell.invert {
-    background: var(--fg);
-    color: var(--bg);
-    border-color: var(--fg);
-  }
-  .cell.invert h4 { color: var(--bg); }
-  .cell.invert .axes { color: rgba(255,255,255,0.65); }
-  .cell.invert .cell-arrow { color: rgba(255,255,255,0.85); font-style: italic; font-size: 12.5px; margin-top: 6px; }
-  .johari-caption {
-    font-size: clamp(14px, 1.05vw, 16px);
-    line-height: 1.6;
-    color: var(--fg-mid);
-    max-width: 38ch;
-  }
-  .johari-caption b { font-weight: 600; color: var(--fg); }
-  .johari-caption em { font-style: italic; color: var(--fg); }
+/* ─── kpi strip ─── */
+.kpi-strip {
+  display: grid; gap: 0;
+  border-top: 1px solid var(--g200);
+  border-bottom: 1px solid var(--g200);
+}
+.kpi-strip .kp {
+  padding: clamp(14px, 2vh, 24px) 0;
+  border-right: 1px solid var(--g200);
+  padding-right: clamp(20px, 2.5vw, 36px);
+}
+.kpi-strip .kp:last-child { border-right: none; padding-right: 0; }
+.kp-val {
+  font-size: clamp(28px, 3.2vw, 52px);
+  font-weight: 700; letter-spacing: -0.04em; line-height: 1;
+  color: var(--black);
+}
+.kp-val.purple { color: var(--purple); }
+.kp-lbl { font-size: 11px; color: var(--g500); margin-top: 5px; }
 
-  /* ============ 06 · COMMUNICATION (50/50) ============ */
-  .comm-flow {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 14px;
-  }
-  .node {
-    border: 1px solid var(--line-strong);
-    padding: clamp(14px, 2vh, 22px) clamp(14px, 1.6vw, 22px);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    min-height: 130px;
-    background: var(--bg);
-  }
-  .node h4 {
-    font-family: inherit;
-    font-weight: 600;
-    font-size: 14px;
-    letter-spacing: -0.01em;
-    color: var(--fg);
-  }
-  .node .node-step {
-    font-size: 11px;
-    color: var(--fg-dim);
-    margin-bottom: 2px;
-  }
-  .node p {
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--fg-mid);
-  }
-  .node.invert {
-    background: var(--fg);
-    color: var(--bg);
-    border-color: var(--fg);
-  }
-  .node.invert h4 { color: var(--bg); }
-  .node.invert .node-step { color: rgba(255,255,255,0.6); }
-  .node.invert p { color: rgba(255,255,255,0.85); }
-  .kicker {
-    font-size: clamp(17px, 1.4vw, 22px);
-    line-height: 1.35;
-    letter-spacing: -0.014em;
-    color: var(--fg-soft);
-    max-width: 50ch;
-  }
-  .kicker em {
-    font-style: italic;
-    color: var(--fg);
-    font-weight: 500;
-  }
+/* ─── scheme compare ─── */
+.scheme-row { display: grid; gap: 0; border-top: 1px solid var(--g200); }
+.scheme-item {
+  display: grid; grid-template-columns: 200px repeat(4, 1fr);
+  border-bottom: 1px solid var(--g200);
+  align-items: center; gap: 0;
+}
+.scheme-item.head { border-bottom: 2px solid var(--black); }
+.scheme-col { padding: 14px 0; padding-right: 24px; font-size: clamp(11px, 0.85vw, 13px); }
+.scheme-col.lbl { font-weight: 600; }
+.scheme-col.dim { color: var(--g500); font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.scheme-col.r { text-align: right; padding-right: 0; font-variant-numeric: tabular-nums; }
+.scheme-item.rec { background: var(--purple-light); }
 
-  /* ============ 07 · ETHICS (edge-to-edge) ============ */
-  .ethics-table {
-    border-top: 1px solid var(--fg);
-  }
-  .ethics-row {
-    display: grid;
-    grid-template-columns: minmax(220px, 1fr) 2fr minmax(120px, 180px);
-    gap: clamp(20px, 3vw, 50px);
-    align-items: center;
-    padding: clamp(20px, 3vh, 36px) var(--pad-x);
-    border-bottom: 1px solid var(--line-strong);
-  }
-  .ethics-row .lens {
-    font-family: inherit;
-    font-weight: 500;
-    font-size: clamp(26px, 2.6vw, 44px);
-    letter-spacing: -0.03em;
-    color: var(--fg);
-  }
-  .ethics-row .lens em { font-style: italic; }
-  .ethics-row .desc {
-    font-size: 14.5px;
-    line-height: 1.55;
-    color: var(--fg-mid);
-  }
-  .ethics-row .verdict {
-    font-size: 14px;
-    text-align: right;
-    font-style: italic;
-    color: var(--fg);
-  }
-  .ethics-row.weak {
-    background: var(--fg);
-    color: var(--bg);
-    border-color: var(--fg);
-  }
-  .ethics-row.weak .lens,
-  .ethics-row.weak .verdict { color: var(--bg); }
-  .ethics-row.weak .desc { color: rgba(255,255,255,0.78); }
-  .ethics-kicker {
-    font-size: clamp(15px, 1.2vw, 19px);
-    line-height: 1.45;
-    color: var(--fg-soft);
-    max-width: 64ch;
-    padding: clamp(20px, 3vh, 36px) var(--pad-x);
-  }
-  .ethics-kicker em {
-    font-style: italic;
-    color: var(--fg);
-    font-weight: 500;
-  }
+/* ─── scenario ─── */
+.scenario-strip { display: grid; gap: 0; border-top: 1px solid var(--g200); }
+.scen-item {
+  border-bottom: 1px solid var(--g200);
+  padding: clamp(14px, 2.2vh, 26px) 0;
+  display: grid; grid-template-columns: 100px 80px 1fr;
+  align-items: center; gap: 24px;
+}
+.scen-name { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--g500); }
+.scen-prob { font-size: clamp(22px, 2.4vw, 38px); font-weight: 700; letter-spacing: -0.04em; color: var(--black); }
+.scen-prob.purple { color: var(--purple); }
+.scen-desc { font-size: 12.5px; line-height: 1.55; color: var(--g700); }
 
-  /* ============ 08 · LEADERSHIP (edge-to-edge) ============ */
-  .actions {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    border-top: 1px solid var(--fg);
-    border-bottom: 1px solid var(--fg);
-  }
-  .action {
-    padding: clamp(24px, 3vh, 40px) clamp(20px, 2.2vw, 36px);
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid var(--line-strong);
-    min-height: 360px;
-  }
-  .action:last-child { border-right: none; }
-  .action-step {
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--fg-dim);
-    font-variant-numeric: tabular-nums;
-    margin-bottom: 12px;
-  }
-  .action-head h3 {
-    font-family: inherit;
-    font-weight: 500;
-    font-size: clamp(15px, 1.05vw, 18px);
-    letter-spacing: -0.018em;
-    line-height: 1.3;
-    color: var(--fg);
-  }
-  .action-head h3 em { font-style: italic; }
-  .kpi-stat {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: clamp(16px, 3vh, 28px) 0;
-  }
-  .kpi-value {
-    font-family: inherit;
-    font-size: clamp(56px, 6.4vw, 116px);
-    font-weight: 500;
-    letter-spacing: -0.05em;
-    line-height: 0.88;
-    color: var(--fg);
-    display: block;
-  }
-  .kpi-unit {
-    font-size: 0.42em;
-    font-weight: 400;
-    margin-left: 4px;
-    letter-spacing: -0.02em;
-    vertical-align: 0.18em;
-  }
-  .kpi-caption {
-    font-size: clamp(12.5px, 1vw, 14.5px);
-    color: var(--fg-mid);
-    margin-top: 14px;
-    line-height: 1.45;
-    max-width: 24ch;
-  }
-  .action-detail {
-    font-size: 13px;
-    line-height: 1.55;
-    color: var(--fg-mid);
-    padding-top: 16px;
-    border-top: 1px solid var(--line);
-  }
+/* ─── cover ─── */
+.slide-cover {
+  background: var(--purple);
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: var(--py) var(--px);
+}
+.cover-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.cover-wordmark {
+  font-size: 13px; font-weight: 700; letter-spacing: -0.01em; color: #fff;
+}
+.cover-tag {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 5px 14px; border-radius: 100px;
+}
+.cover-mid { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: clamp(24px, 4vh, 48px); }
+.cover-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.6); margin-bottom: 18px;
+}
+.cover-h1 {
+  font-size: clamp(56px, 9vw, 160px);
+  font-weight: 700; letter-spacing: -0.05em; line-height: 0.88;
+  color: #fff; max-width: 14ch;
+}
+.cover-h1 em { font-style: italic; color: rgba(255,255,255,0.6); font-weight: 600; }
+.cover-bottom {
+  border-top: 1px solid rgba(255,255,255,0.2);
+  padding-top: clamp(20px, 3vh, 36px);
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: flex-end; gap: 48px;
+}
+.cover-meta { display: flex; flex-direction: column; gap: 3px; }
+.cover-meta span { font-size: 12.5px; color: rgba(255,255,255,0.65); line-height: 1.6; }
+.cover-meta strong { color: #fff; font-weight: 600; }
+.cover-nums { display: flex; gap: clamp(28px, 3.5vw, 52px); }
+.cover-num { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.cover-num-val { font-size: clamp(26px, 3vw, 46px); font-weight: 700; letter-spacing: -0.04em; color: #fff; }
+.cover-num-lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
 
-  /* ============ 09 · CLOSE (edge-to-edge) ============ */
-  .close-headline {
-    font-size: clamp(64px, 10vw, 200px);
-    line-height: 0.92;
-    letter-spacing: -0.05em;
-    font-weight: 500;
-  }
-  .close-headline em { font-style: italic; }
-  .close-foot {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 40px;
-    padding: clamp(20px, 3vh, 32px) var(--pad-x);
-    border-top: 1px solid var(--line-strong);
-  }
-  .signoff {
-    max-width: 44ch;
-    font-size: clamp(14px, 1.1vw, 17px);
-    line-height: 1.55;
-    color: var(--fg-mid);
-  }
-  .signoff em {
-    font-style: italic;
-    color: var(--fg);
-  }
-  .thanks {
-    font-size: clamp(14px, 1vw, 16px);
-    color: var(--fg);
-    font-style: italic;
-    white-space: nowrap;
-  }
+/* ─── close ─── */
+.slide-close {
+  background: var(--black);
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: var(--py) var(--px);
+}
+.close-h {
+  font-size: clamp(52px, 8.5vw, 150px);
+  font-weight: 700; letter-spacing: -0.05em; line-height: 0.9; color: #fff;
+}
+.close-h em { font-style: italic; color: var(--purple-light); }
+.close-foot {
+  border-top: 1px solid rgba(255,255,255,0.12);
+  padding-top: clamp(18px, 2.8vh, 30px);
+  display: flex; justify-content: space-between; align-items: flex-end; gap: 40px;
+}
+.close-signoff { font-size: 13px; line-height: 1.65; color: rgba(255,255,255,0.55); max-width: 50ch; }
+.close-signoff em { color: #fff; font-style: normal; font-weight: 500; }
+.close-date { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; white-space: nowrap; }
 
-  /* ============ Stats grid (By the Numbers) ============ */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    border-top: 1px solid var(--fg);
-    border-bottom: 1px solid var(--fg);
+@media(prefers-reduced-motion: reduce) {
+  .slide.active .ln-i, .slide.active .fd {
+    animation: none !important; transform: none !important; opacity: 1 !important;
   }
-  .stat {
-    padding: clamp(22px, 3.2vh, 40px) clamp(20px, 2vw, 32px);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    border-right: 1px solid var(--line-strong);
-    min-height: 260px;
-  }
-  .stat:last-child { border-right: none; }
-  .stat-label {
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--fg-dim);
-  }
-  .stat-value {
-    font-family: inherit;
-    font-size: clamp(60px, 6.6vw, 124px);
-    font-weight: 500;
-    letter-spacing: -0.05em;
-    line-height: 0.88;
-    color: var(--fg);
-    margin-top: auto;
-    display: block;
-  }
-  .stat-unit {
-    font-size: 0.42em;
-    font-weight: 400;
-    margin-left: 4px;
-    letter-spacing: -0.02em;
-    vertical-align: 0.18em;
-  }
-  .stat-caption {
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--fg-mid);
-    max-width: 24ch;
-    margin-top: 6px;
-  }
-
-  /* ============ Growth grid (Personal reflection) ============ */
-  .growth-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    border-top: 1px solid var(--line-strong);
-    border-bottom: 1px solid var(--line-strong);
-  }
-  .growth {
-    padding: clamp(22px, 3vh, 40px) clamp(22px, 2.4vw, 40px);
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    border-right: 1px solid var(--line);
-    min-height: 280px;
-  }
-  .growth:last-child { border-right: none; }
-  .growth-tag {
-    font-size: 12px;
-    letter-spacing: 0.04em;
-    color: var(--fg-dim);
-  }
-  .growth-before {
-    font-size: 14px;
-    color: var(--fg-dim);
-    font-style: italic;
-    text-decoration: line-through;
-    text-decoration-color: var(--fg-faint);
-    line-height: 1.45;
-    max-width: 24ch;
-  }
-  .growth h3 {
-    font-family: inherit;
-    font-weight: 500;
-    font-size: clamp(19px, 1.6vw, 26px);
-    letter-spacing: -0.026em;
-    line-height: 1.22;
-    color: var(--fg);
-    margin-top: auto;
-    max-width: 26ch;
-  }
-  .growth h3 em { font-style: italic; }
-
-  /* ===== Responsive ===== */
-  @media (max-width: 960px) {
-    .slide-split { grid-template-columns: 1fr; grid-template-rows: 1fr 1.4fr; }
-    .image-half { min-height: 38vh; }
-    .three-layer, .roles, .actions, .comm-flow, .stats-grid, .growth-grid {
-      grid-template-columns: 1fr;
-    }
-    .layer, .action, .stat, .growth { border-right: none; border-bottom: 1px solid var(--line); }
-    .layer:last-child, .action:last-child, .stat:last-child, .growth:last-child { border-bottom: none; }
-    .ethics-row { grid-template-columns: 1fr; gap: 6px; }
-    .ethics-row .verdict { text-align: left; }
-    .bias-mini > div { grid-template-columns: 1fr; gap: 4px; }
-    .close-foot { flex-direction: column; align-items: flex-start; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .slide.active .line-inner,
-    .slide.active .fade,
-    .slide.active .scale-in,
-    .slide-cover.active .cover-video {
-      animation: none !important;
-      transform: none !important;
-      opacity: 1 !important;
-    }
-  }
+}
 </style>
 </head>
 <body>
 
-<div class="counter" id="counter">01 / 09</div>
+<div class="pg-counter" id="counter">01 / 15</div>
 
 <main class="deck" id="deck">
 
-  <!-- ============ 01 · COVER (full-bleed video) ============ -->
-  <section class="slide slide-cover active" data-i="0">
-    <div class="cover-video-wrap" style="background: #000;"></div>
-    <div class="cover-scrim"></div>
-    <div class="cover-content">
-      <div class="cover-top fade" style="--d:0">UE424 — Life, Learning &amp; Leadership</div>
+<!-- ══════════════════════════════════════════════════════
+     01 · COVER
+══════════════════════════════════════════════════════ -->
+<section class="slide slide-cover active" data-i="0">
+  <div class="cover-top fd" style="--d:0">
+    
+    <span class="cover-tag">Business Finance · UE312</span>
+  </div>
 
-      <div class="cover-bottom">
-        <h1 class="cover-title">
-          <span class="line"><span class="line-inner" style="--d:1">From Experience</span></span>
-          <span class="line"><span class="line-inner" style="--d:2">to <em>Insight.</em></span></span>
-        </h1>
-        <div class="cover-meta fade" style="--d:6">
-          <span>Skyline Trust Eye Clinic — Lahore, Pakistan</span>
-          <span class="dim">15 minutes · 9 patients · 16 hours of fieldwork</span>
-        </div>
+  <div class="cover-mid">
+    <div class="cover-eyebrow fd" style="--d:1">Food &amp; Personal Care Sector · Pakistan Stock Exchange</div>
+    <h1 class="cover-h1">
+      <span class="ln"><span class="ln-i" style="--d:2">Risk-Return</span></span>
+      <span class="ln"><span class="ln-i" style="--d:3">Portfolio</span></span>
+      <span class="ln"><span class="ln-i" style="--d:4"><em>Analysis.</em></span></span>
+    </h1>
+  </div>
+
+  <div class="cover-bottom fd" style="--d:6">
+    <div class="cover-meta">
+      
+      <span>Data window: <strong>01 Nov 2023 – 12 May 2026</strong></span>
+      <span>Risk-free rate: <strong>12.0% (SBP T-Bill)</strong></span>
+    </div>
+    <div class="cover-nums">
+      <div class="cover-num">
+        <span class="cover-num-val">8</span>
+        <span class="cover-num-lbl">Stocks</span>
+      </div>
+      <div class="cover-num">
+        <span class="cover-num-val">627</span>
+        <span class="cover-num-lbl">Daily obs.</span>
+      </div>
+      <div class="cover-num">
+        <span class="cover-num-val">5,000</span>
+        <span class="cover-num-lbl">MC simulations</span>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ============ 02 · CONTEXT ============ -->
-  <section class="slide slide-split" data-i="1">
-    <div class="image-half">
-      <div class="img-placeholder scale-in" role="img" aria-label="Inside the clinic"></div>
-    </div>
 
-    <div class="text-half">
-      <h2 class="split-title">
-        <span class="line"><span class="line-inner" style="--d:0">A free clinic.</span></span>
-        <span class="line"><span class="line-inner" style="--d:1">Three roles.</span></span>
-        <span class="line"><span class="line-inner" style="--d:2"><em>Sixteen hours.</em></span></span>
-      </h2>
+<!-- ══════════════════════════════════════════════════════
+     02b · SECTOR RATIONALE
+══════════════════════════════════════════════════════ -->
+<section class="slide s-full" data-i="2">
+  <span class="sec-tag fd" style="--d:0">02 — Sector Rationale</span>
 
-      <div class="roles">
-        <div class="role fade" style="--d:6">
-          <h4>Haseeb Ur rehman</h4>
-          <p>Refraction &amp; abnormality screening with the doctor.</p>
-        </div>
-        <div class="role fade" style="--d:7">
-          <h4>Muhammad Ibrahim</h4>
-          <p>Consultation, intake &amp; follow-up.</p>
-        </div>
-        <div class="role fade" style="--d:8">
-          <h4>Eman Afrooz</h4>
-          <p>Vitals, screenings, dispensing.</p>
-        </div>
+  <h2 class="h2" style="margin-bottom: clamp(28px,4.5vh,56px);">
+    <span class="ln"><span class="ln-i" style="--d:1">Why Food &amp;</span></span>
+    <span class="ln"><span class="ln-i" style="--d:2"><em>Personal Care.</em></span></span>
+  </h2>
+
+  <div class="fd" style="--d:3; flex:1; display:flex; flex-direction:column; justify-content:center; gap:0; border-top:1px solid var(--g200);">
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; border-bottom:1px solid var(--g200);">
+      <div style="padding: clamp(22px,3.5vh,44px) 0 clamp(22px,3.5vh,44px) 0; padding-right:clamp(32px,4vw,64px); border-right:1px solid var(--g200);">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:var(--purple);margin-bottom:12px;">01</div>
+        <p style="font-size:clamp(20px,2.2vw,34px);font-weight:700;letter-spacing:-0.03em;line-height:1.1;color:var(--black);">Demand that never sleeps.</p>
+      </div>
+      <div style="padding: clamp(22px,3.5vh,44px) 0 clamp(22px,3.5vh,44px) clamp(32px,4vw,64px);">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:var(--purple);margin-bottom:12px;">02</div>
+        <p style="font-size:clamp(20px,2.2vw,34px);font-weight:700;letter-spacing:-0.03em;line-height:1.1;color:var(--black);">Long dividend histories. <em style="color:var(--purple);font-style:italic;">DDM-ready.</em></p>
       </div>
     </div>
-  </section>
 
-  <!-- ============ 03 · BY THE NUMBERS (data anchor) ============ -->
-  <section class="slide slide-edge" data-i="2">
-    <h2 class="edge-headline display">
-      <span class="line"><span class="line-inner" style="--d:0">What 16 hours</span></span>
-      <span class="line"><span class="line-inner" style="--d:1">actually <em>showed us.</em></span></span>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; border-bottom:1px solid var(--g200);">
+      <div style="padding: clamp(22px,3.5vh,44px) 0 clamp(22px,3.5vh,44px) 0; padding-right:clamp(32px,4vw,64px); border-right:1px solid var(--g200);">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:var(--purple);margin-bottom:12px;">03</div>
+        <p style="font-size:clamp(18px,1.9vw,30px);font-weight:700;letter-spacing:-0.03em;line-height:1.1;color:var(--black);">Below-market beta across the board.</p>
+      </div>
+      <div style="padding: clamp(22px,3.5vh,44px) 0 clamp(22px,3.5vh,44px) clamp(32px,4vw,64px); border-right:1px solid var(--g200);">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:var(--purple);margin-bottom:12px;">04</div>
+        <p style="font-size:clamp(18px,1.9vw,30px);font-weight:700;letter-spacing:-0.03em;line-height:1.1;color:var(--black);">Eight sub-segments. <em style="color:var(--purple);font-style:italic;">One theme.</em></p>
+      </div>
+      <div style="padding: clamp(22px,3.5vh,44px) 0 clamp(22px,3.5vh,44px) clamp(32px,4vw,64px);">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:var(--purple);margin-bottom:12px;">05</div>
+        <p style="font-size:clamp(18px,1.9vw,30px);font-weight:700;letter-spacing:-0.03em;line-height:1.1;color:var(--black);">Pakistan's rising middle class. <em style="color:var(--purple);font-style:italic;">Structural growth.</em></p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════
+     03 · STOCK UNIVERSE
+══════════════════════════════════════════════════════ -->
+<section class="slide s-full" data-i="1">
+  <span class="sec-tag fd" style="--d:0">01 — Universe</span>
+
+  <h2 class="h2" style="margin-bottom: clamp(20px,3vh,36px);">
+    <span class="ln"><span class="ln-i" style="--d:1">Eight PSX-listed companies.</span></span>
+    <span class="ln"><span class="ln-i" style="--d:2">One <em>defensive sector.</em></span></span>
+  </h2>
+
+  <div class="fd" style="--d:3; flex:1; overflow:auto;">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Ticker</th>
+          <th>Company</th>
+          <th>Sub-segment</th>
+          <th class="r">Price range (PKR)</th>
+          <th class="r">Obs.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>NESTLE</strong></td>
+          <td>Nestle Pakistan Ltd.</td>
+          <td class="dim">FMCG / Dairy</td>
+          <td class="r mono">6,552 – 9,568</td>
+          <td class="r mono">589</td>
+        </tr>
+        <tr>
+          <td><strong>COLG</strong></td>
+          <td>Colgate-Palmolive Pakistan</td>
+          <td class="dim">Personal Care</td>
+          <td class="r mono">1,058 – 1,718</td>
+          <td class="r mono">627</td>
+        </tr>
+        <tr>
+          <td><strong>UPFL</strong></td>
+          <td>Unilever Pakistan Foods</td>
+          <td class="dim">Premium FMCG</td>
+          <td class="r mono">17,075 – 34,140</td>
+          <td class="r mono">575</td>
+        </tr>
+        <tr>
+          <td><strong>RMPL</strong></td>
+          <td>Rahan Maize Products Ltd.</td>
+          <td class="dim">Industrial Food</td>
+          <td class="r mono">6,804 – 12,332</td>
+          <td class="r mono">583</td>
+        </tr>
+        <tr>
+          <td><strong>NATF</strong></td>
+          <td>National Foods Ltd.</td>
+          <td class="dim">Packaged Foods</td>
+          <td class="r mono">106 – 431</td>
+          <td class="r mono">627</td>
+        </tr>
+        <tr>
+          <td><strong>FCEPL</strong></td>
+          <td>FrieslandCampina Engro Pakistan</td>
+          <td class="dim">Dairy</td>
+          <td class="r mono">58 – 115</td>
+          <td class="r mono">627</td>
+        </tr>
+        <tr>
+          <td><strong>SHEZ</strong></td>
+          <td>Shezan International Ltd.</td>
+          <td class="dim">Beverages / Food</td>
+          <td class="r mono">82 – 292</td>
+          <td class="r mono">627</td>
+        </tr>
+        <tr>
+          <td><strong>MFL</strong></td>
+          <td>Matco Foods Ltd.</td>
+          <td class="dim">Rice / Export</td>
+          <td class="r mono">23 – 80</td>
+          <td class="r mono">627</td>
+        </tr>
+        <tr class="hl-top">
+          <td colspan="2"><strong>KSE-100 Index</strong></td>
+          <td class="dim">Benchmark</td>
+          <td class="r mono">5,235 – 18,917</td>
+          <td class="r mono">627</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="body-text fd" style="--d:8; margin-top:16px; color:var(--g400);">
+    Data window: 01 Nov 2023 – 12 May 2026 · All prices from PSX daily close feed
+  </p>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════
+     04 · RISK & RETURN — BOX PLOT
+══════════════════════════════════════════════════════ -->
+<section class="slide s-full" data-i="2">
+  <span class="sec-tag fd" style="--d:0">03 — Risk &amp; Return</span>
+
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:clamp(12px,1.8vh,20px);">
+    <h2 class="h2 fd" style="--d:1">
+      <span class="ln"><span class="ln-i" style="--d:1">Daily return distribution</span></span>
+      <span class="ln"><span class="ln-i" style="--d:2">by stock, <em>sorted by σ.</em></span></span>
+    </h2>
+    <div class="fd" style="--d:3; display:flex; gap:20px; padding-bottom:4px;">
+      <div style="display:flex; align-items:center; gap:6px;">
+        <span style="width:28px; height:8px; background:var(--purple); opacity:0.18; border:1px solid var(--purple); border-radius:1px; display:inline-block;"></span>
+        <span style="font-size:11px; color:var(--g400);">IQR (25–75%)</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <span style="width:28px; height:2px; background:var(--purple); display:inline-block;"></span>
+        <span style="font-size:11px; color:var(--g400);">Median</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <span style="width:28px; height:1px; background:var(--g400); display:inline-block;"></span>
+        <span style="font-size:11px; color:var(--g400);">Whiskers (1.5×IQR)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="fd" style="--d:4; flex:1; min-height:0; position:relative;">
+    <canvas id="bpChart" style="width:100%; height:100%; display:block;"></canvas>
+  </div>
+
+  <p class="body-text fd" style="--d:8; margin-top:10px; color:var(--g400);">
+    Daily returns (%) · Stocks ordered left to right by increasing annualised σ · Dots beyond whiskers are outliers · Dashed line: zero return
+  </p>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════
+     04 · CORRELATION
+══════════════════════════════════════════════════════ -->
+<section class="slide col-2" data-i="3">
+  <div class="col-left">
+    <span class="sec-tag fd" style="--d:0">03 — Correlation</span>
+    <h2 class="h2">
+      <span class="ln"><span class="ln-i" style="--d:1">Average pair-wise</span></span>
+      <span class="ln"><span class="ln-i" style="--d:2">correlation:</span></span>
+      <span class="ln"><span class="ln-i" style="--d:3"><em>ρ = 0.18</em></span></span>
     </h2>
 
-    <div class="stats-grid">
-      <div class="stat fade" style="--d:5">
-        <span class="stat-label">Clinical find</span>
-        <span class="stat-value">60<span class="stat-unit">%</span></span>
-        <p class="stat-caption">vision lost in one eye — unknown to the patient until that day.</p>
-      </div>
-      <div class="stat fade" style="--d:6">
-        <span class="stat-label">The wait</span>
-        <span class="stat-value">2<span class="stat-unit">yrs</span></span>
-        <p class="stat-caption">the breadwinner&rsquo;s silent delay from first symptom to first visit.</p>
-      </div>
-      <div class="stat fade" style="--d:7">
-        <span class="stat-label">Co-morbidity</span>
-        <span class="stat-value">9<span class="stat-unit">/9</span></span>
-        <p class="stat-caption">screened with elevated BP or blood sugar — almost none knew.</p>
-      </div>
-      <div class="stat fade" style="--d:8">
-        <span class="stat-label">Awareness</span>
-        <span class="stat-value">0</span>
-        <p class="stat-caption">patients aware their diabetes was already attacking their eyes.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ 04 · ISSUE (edge-to-edge) ============ -->
-  <section class="slide slide-edge" data-i="3">
-    <h2 class="edge-headline display">
-      <span class="line"><span class="line-inner" style="--d:0">We expected</span></span>
-      <span class="line"><span class="line-inner" style="--d:1"><span class="light">a medical problem.</span></span></span>
-      <span class="line" style="margin-top:0.18em"><span class="line-inner" style="--d:3">We found a <em>perception</em></span></span>
-      <span class="line"><span class="line-inner" style="--d:4">problem.</span></span>
-    </h2>
-
-    <div class="three-layer">
-      <div class="layer fade" style="--d:8">
-        <span class="layer-num">01 — Patient → self</span>
-        <h3>Can&rsquo;t see what&rsquo;s wrong with them.</h3>
-        <p>Literal blind spots about their own bodies and conditions.</p>
-      </div>
-      <div class="layer fade" style="--d:9">
-        <span class="layer-num">02 — Patient → system</span>
-        <h3>Misread the institution.</h3>
-        <p>&ldquo;Free&rdquo; assumed to mean low quality — or quietly expensive.</p>
-      </div>
-      <div class="layer fade" style="--d:10">
-        <span class="layer-num">03 — System → patient</span>
-        <h3>Misread the human in front of them.</h3>
-        <p>A case to clear, not a frightened person to hear.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ 05 · BIAS ============ -->
-  <section class="slide slide-split" data-i="4">
-    <div class="text-half">
-      <h2 class="split-title">
-        <span class="line"><span class="line-inner" style="--d:0">The breadwinner</span></span>
-        <span class="line"><span class="line-inner" style="--d:1">who waited</span></span>
-        <span class="line"><span class="line-inner" style="--d:2"><em>two years.</em></span></span>
-      </h2>
-
-      <blockquote class="pull-quote fade" style="--d:5">
-        &ldquo;I cannot stop working — my family depends on me. I didn&rsquo;t want to spend money on myself.&rdquo;
-      </blockquote>
-
-      <div class="bias-mini">
-        <div class="fade" style="--d:7">
-          <h5>In-group stereotype</h5>
-          <p>What a &ldquo;real provider&rdquo; does — and doesn&rsquo;t do.</p>
-        </div>
-        <div class="fade" style="--d:8">
-          <h5>Availability bias</h5>
-          <p>&ldquo;Hospitals always cost money&rdquo; — based on hearsay, not truth.</p>
-        </div>
-        <div class="fade" style="--d:9">
-          <h5>Self-stereotype</h5>
-          <p>&ldquo;Men endure; they don&rsquo;t seek help.&rdquo; A bias he didn&rsquo;t know he was carrying.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="image-half">
-      <div class="img-placeholder scale-in" role="img" aria-label="Patient at consultation"></div>
-    </div>
-  </section>
-
-  <!-- ============ 06 · MOTIVATION (Why he waited) ============ -->
-  <section class="slide slide-edge" data-i="5">
-    <h2 class="edge-headline display">
-      <span class="line"><span class="line-inner" style="--d:0">Why he didn&rsquo;t come</span></span>
-      <span class="line"><span class="line-inner" style="--d:1">for <em>two years.</em></span></span>
-    </h2>
-
-    <div class="three-layer">
-      <div class="layer fade" style="--d:5">
-        <span class="layer-num">Lens 01 — Maslow&rsquo;s Hierarchy</span>
-        <h3>Physiological needs outrank safety.</h3>
-        <p>When food and income aren&rsquo;t guaranteed, untreated illness becomes the price of survival.</p>
-      </div>
-      <div class="layer fade" style="--d:6">
-        <span class="layer-num">Lens 02 — Intrinsic vs. Extrinsic</span>
-        <h3>Family duty drowned out self-care.</h3>
-        <p>The pull to provide overpowered the pull to heal. The provider role became a cage.</p>
-      </div>
-      <div class="layer fade" style="--d:7">
-        <span class="layer-num">Lens 03 — Self-Determination</span>
-        <h3>Autonomy, competence, relatedness — all denied.</h3>
-        <p>He couldn&rsquo;t take time off. He didn&rsquo;t understand the disease. The system felt foreign.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ 07 · JOHARI ============ -->
-  <section class="slide slide-split" data-i="6">
-    <div class="text-half">
-      <h2 class="split-title">
-        <span class="line"><span class="line-inner" style="--d:0">The patient</span></span>
-        <span class="line"><span class="line-inner" style="--d:1">who couldn&rsquo;t see</span></span>
-        <span class="line"><span class="line-inner" style="--d:2"><em>himself.</em></span></span>
-      </h2>
-
-      <p class="johari-caption fade" style="--d:5">
-        Refraction revealed a <b>60% loss of vision</b> in one eye. He had no idea — only one question:
-        <em>&ldquo;How is this linked to my sugar?&rdquo;</em> The clinic&rsquo;s most powerful intervention wasn&rsquo;t the medicine. It was the moment of feedback.
-      </p>
-    </div>
-
-    <div class="text-half" style="padding-left: 0;">
-      <div class="johari-grid fade" style="--d:4">
-        <div class="cell">
-          <div class="axes">Known to self · Known to others</div>
-          <h4>Open</h4>
-        </div>
-        <div class="cell invert">
-          <div class="axes">Unknown to self · Known to others</div>
-          <div>
-            <h4>Blind</h4>
-            <div class="cell-arrow">— He lived here.</div>
-          </div>
-        </div>
-        <div class="cell">
-          <div class="axes">Known to self · Unknown to others</div>
-          <h4>Hidden</h4>
-        </div>
-        <div class="cell">
-          <div class="axes">Unknown to self · Unknown to others</div>
-          <h4>Unknown</h4>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ 08 · COMMUNICATION ============ -->
-  <section class="slide slide-split" data-i="7">
-    <div class="image-half">
-      <div class="img-placeholder scale-in" role="img" aria-label="Communication moment"></div>
-    </div>
-
-    <div class="text-half">
-      <h2 class="split-title">
-        <span class="line"><span class="line-inner" style="--d:0">Same words.</span></span>
-        <span class="line"><span class="line-inner" style="--d:1"><em>Different outcome.</em></span></span>
-      </h2>
-
-      <div class="comm-flow">
-        <div class="node fade" style="--d:5">
-          <span class="node-step">01 — Sender</span>
-          <h4>The clinical staff</h4>
-          <p>Rushed, technical, low affect — competent, but emotionally guarded.</p>
-        </div>
-        <div class="node invert fade" style="--d:6">
-          <span class="node-step">02 — Channel</span>
-          <h4>The clinic itself</h4>
-          <p>Crowded room. No privacy. Time pressure. Fear. Low health-literacy.</p>
-        </div>
-        <div class="node fade" style="--d:7">
-          <span class="node-step">03 — Receiver</span>
-          <h4>The patient</h4>
-          <p>Anxious, culturally guarded, hearing about their body for the first time.</p>
-        </div>
-      </div>
-
-      <p class="kicker fade" style="--d:10">
-        Almost every patient we tested had high BP or sugar — and almost none of them <em>knew</em>. In healthcare, <em>delivery is the message.</em>
-      </p>
-    </div>
-  </section>
-
-  <!-- ============ 09 · ETHICS (edge-to-edge) ============ -->
-  <section class="slide slide-edge" data-i="8">
-    <h2 class="edge-headline display">
-      <span class="line"><span class="line-inner" style="--d:0">Three lenses.</span></span>
-      <span class="line"><span class="line-inner" style="--d:1">One <em>clinic.</em></span></span>
-    </h2>
-
-    <div class="ethics-table">
-      <div class="ethics-row fade" style="--d:5">
-        <span class="lens">Utilitarian</span>
-        <span class="desc">Greatest good for the greatest number — free care, mass screening, real impact at scale.</span>
-        <span class="verdict">Strong.</span>
-      </div>
-      <div class="ethics-row fade" style="--d:6">
-        <span class="lens">Rights-based</span>
-        <span class="desc">Each person&rsquo;s dignity &amp; autonomy. Treated, yes — but not always heard, rarely understood.</span>
-        <span class="verdict">Mixed.</span>
-      </div>
-      <div class="ethics-row weak fade" style="--d:7">
-        <span class="lens"><em>Virtue</em></span>
-        <span class="desc">Character — empathy, compassion, patience. Not unkind, but emotionally guarded.</span>
-        <span class="verdict">Weak.</span>
-      </div>
-    </div>
-
-    <p class="ethics-kicker fade" style="--d:10">
-      The clinic is <em>utilitarian-strong, virtue-weak.</em> Optimize purely for numbers, and you can erode the very humanity that made the mission worth pursuing.
+    <p class="body-text fd" style="--d:5; margin-top: clamp(16px,2.5vh,28px);">
+      Exceptionally low average intra-sector correlation — stocks move largely independently, providing strong diversification.
     </p>
-  </section>
 
-  <!-- ============ 10 · LEADERSHIP (edge-to-edge) ============ -->
-  <section class="slide slide-edge" data-i="9">
-    <h2 class="edge-headline display">
-      <span class="line"><span class="line-inner" style="--d:0">From observation</span></span>
-      <span class="line"><span class="line-inner" style="--d:1">to <em>action.</em></span></span>
-    </h2>
-
-    <div class="actions">
-      <article class="action fade" style="--d:5">
-        <header class="action-head">
-          <div class="action-step">Goal 01</div>
-          <h3>Empathy as a <em>clinical skill.</em></h3>
-        </header>
-        <div class="kpi-stat">
-          <span class="kpi-value">&ge;&thinsp;85<span class="kpi-unit">%</span></span>
-          <p class="kpi-caption">of patients report they &ldquo;felt heard.&rdquo;</p>
+    <div class="fd" style="--d:6; margin-top: clamp(20px,3vh,36px);">
+      <p style="font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--g400); margin-bottom:14px; font-weight:600;">Strongest pair</p>
+      <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:24px;">
+        <div style="display:flex; align-items:baseline; gap:10px;">
+          <span style="font-size:clamp(22px,2.4vw,30px); font-weight:800; color:var(--purple);">COLG × FCEPL</span>
+          <span style="font-size:13px; color:var(--g500);">ρ = 0.35</span>
         </div>
-        <p class="action-detail">Three communication workshops in 90 days. Raise the bar from &ldquo;treat the patient&rdquo; to &ldquo;make them feel seen.&rdquo;</p>
-      </article>
-
-      <article class="action fade" style="--d:6">
-        <header class="action-head">
-          <div class="action-step">Goal 02</div>
-          <h3>Shrink the <em>blind quadrant.</em></h3>
-        </header>
-        <div class="kpi-stat">
-          <span class="kpi-value">100<span class="kpi-unit">%</span></span>
-          <p class="kpi-caption">Urdu summary delivery by end of Q2.</p>
-        </div>
-        <p class="action-detail">One-page Urdu summary for every patient. Awareness leaves the room with the person, not the chart.</p>
-      </article>
-
-      <article class="action fade" style="--d:7">
-        <header class="action-head">
-          <div class="action-step">Goal 03</div>
-          <h3>Catch it <em>earlier.</em></h3>
-        </header>
-        <div class="kpi-stat">
-          <span class="kpi-value">100<span class="kpi-unit">%</span></span>
-          <p class="kpi-caption">screened for BP &amp; sugar at every visit.</p>
-        </div>
-        <p class="action-detail">No exceptions. Most of the eye damage we saw was downstream of uncontrolled diabetes.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- ============ 11 · BLIND QUADRANT (Personal Growth) ============ -->
-  <section class="slide slide-edge" data-i="10">
-    <h2 class="edge-headline display">
-      <span class="line"><span class="line-inner" style="--d:0">What was in our own</span></span>
-      <span class="line"><span class="line-inner" style="--d:1"><em>blind quadrant.</em></span></span>
-    </h2>
-
-    <div class="growth-grid">
-      <div class="growth fade" style="--d:5">
-        <span class="growth-tag">Gamma</span>
-        <p class="growth-before">&ldquo;Leadership begins with action.&rdquo;</p>
-        <h3>It begins with <em>awareness</em> — of patients&rsquo; blind spots, and our own.</h3>
       </div>
-      <div class="growth fade" style="--d:6">
-        <span class="growth-tag">Member 2</span>
-        <p class="growth-before">&ldquo;Bias is loud and visible.&rdquo;</p>
-        <h3>Sometimes it&rsquo;s a story <em>whispered</em> for two years.</h3>
-      </div>
-      <div class="growth fade" style="--d:7">
-        <span class="growth-tag">Member 3</span>
-        <p class="growth-before">&ldquo;Empathy is a personality trait.&rdquo;</p>
-        <h3>It&rsquo;s a <em>clinical skill</em> — measurable, trainable.</h3>
+      <div style="height:1px; background:var(--g200); margin-bottom:18px;"></div>
+      <p style="font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--g400); margin-bottom:14px; font-weight:600;">Lowest correlation (best diversifiers)</p>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div style="display:flex; align-items:baseline; gap:10px;">
+          <span style="font-size:clamp(22px,2.4vw,30px); font-weight:800; color:var(--purple);">UPFL × RMPL</span>
+          <span style="font-size:13px; color:var(--g500);">ρ = 0.03</span>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- ============ 12 · CLOSE (edge-to-edge) ============ -->
-  <section class="slide slide-edge" data-i="11">
-    <h2 class="close-headline display edge-padding-x" style="flex:1; display:flex; flex-direction:column; justify-content:center;">
-      <span class="line"><span class="line-inner" style="--d:0">Awareness</span></span>
-      <span class="line"><span class="line-inner" style="--d:1">is where</span></span>
-      <span class="line"><span class="line-inner" style="--d:2">leadership <em>begins.</em></span></span>
+  <div class="col-right" style="justify-content:flex-start; padding-top: clamp(32px,5vh,64px);">
+    <span class="sec-tag fd" style="--d:4">Pearson correlation matrix — daily returns</span>
+    <div class="fd" style="--d:5; flex:1; min-height:0; position:relative; margin-top:12px;">
+      <canvas id="hmChart" style="width:100%; height:100%; display:block;"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     05 · CAPM / BETA
+══════════════════════════════════════════════════════ -->
+<section class="slide s-full" data-i="4">
+  <span class="sec-tag fd" style="--d:0">04 — CAPM &amp; Security Market Line</span>
+
+  <h2 class="h2" style="margin-bottom: clamp(12px,2vh,24px);">
+    <span class="ln"><span class="ln-i" style="--d:1">Beta, required returns</span></span>
+    <span class="ln"><span class="ln-i" style="--d:2">and <em>SML verdict.</em></span></span>
+  </h2>
+
+  <div class="fd" style="--d:3; flex:1; min-height:0; position:relative;">
+    <canvas id="smlChart" style="width:100%; height:100%; display:block;"></canvas>
+  </div>
+
+  <p class="body-text fd" style="--d:8; margin-top:10px; color:var(--g400);">
+    rf = 12.0% · MRP = 6.0% · k = rf + β × MRP · Dots above SML earned excess return for systematic risk taken
+  </p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     06 · DDM VALUATION — BAR CHART
+══════════════════════════════════════════════════════ -->
+<section class="slide s-full" data-i="5">
+  <span class="sec-tag fd" style="--d:0">05 — Dividend Discount Model</span>
+
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:clamp(12px,1.8vh,20px);">
+    <h2 class="h2 fd" style="--d:1">
+      <span class="ln"><span class="ln-i" style="--d:1">DDM intrinsic value</span></span>
+      <span class="ln"><span class="ln-i" style="--d:2">vs <em>market price.</em></span></span>
+    </h2>
+    <div class="fd" style="--d:3; display:flex; gap:20px; padding-bottom:4px;">
+      <div style="display:flex;align-items:center;gap:7px;">
+        <span style="width:14px;height:14px;background:var(--purple);opacity:0.45;border-radius:2px;display:inline-block;"></span>
+        <span style="font-size:11px;color:var(--g500);">Market price</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;">
+        <span style="width:14px;height:14px;background:var(--purple);border-radius:2px;display:inline-block;"></span>
+        <span style="font-size:11px;color:var(--g500);">DDM intrinsic value</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;">
+        <span style="width:14px;height:14px;background:#c0392b;opacity:0.7;border-radius:2px;display:inline-block;"></span>
+        <span style="font-size:11px;color:var(--g500);">Overvalued (DDM &lt; market)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="fd" style="--d:4; flex:1; min-height:0; position:relative;">
+    <canvas id="ddmChart" style="width:100%;height:100%;display:block;"></canvas>
+  </div>
+
+  <p class="body-text fd" style="--d:8; margin-top:10px; color:var(--g400);">
+    Log scale (PKR) · Gordon Growth Model: P = D₀(1+g)/(k−g) · g = historical DPS CAGR capped at k−1% · MFL excluded (no dividend history) · % labels show DDM premium/discount vs market price
+  </p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     07 · EQUAL-WEIGHT PORTFOLIO
+══════════════════════════════════════════════════════ -->
+<section class="slide col-2" data-i="6">
+  <div class="col-left">
+    <span class="sec-tag fd" style="--d:0">06 — Portfolio Construction</span>
+    <h2 class="h2">
+      <span class="ln"><span class="ln-i" style="--d:1">Equal-weight</span></span>
+      <span class="ln"><span class="ln-i" style="--d:2">portfolio</span></span>
+      <span class="ln"><span class="ln-i" style="--d:3"><em>baseline.</em></span></span>
+    </h2>
+    <p class="body-text fd" style="--d:4; margin-top:clamp(14px,2vh,20px);">
+      12.5% allocated to each of 8 stocks. Serves as the benchmark for scheme comparison.
+    </p>
+
+    <div class="kpi-strip fd" style="--d:5; margin-top:clamp(20px,3vh,36px); grid-template-columns: 1fr 1fr;">
+      <div class="kp">
+        <div class="kp-val purple">28.79%</div>
+        <div class="kp-lbl">Annual return</div>
+      </div>
+      <div class="kp">
+        <div class="kp-val">21.07%</div>
+        <div class="kp-lbl">Volatility σ</div>
+      </div>
+      <div class="kp" style="padding-top: clamp(14px,2vh,20px);">
+        <div class="kp-val">0.80</div>
+        <div class="kp-lbl">Sharpe ratio</div>
+      </div>
+      <div class="kp" style="padding-top: clamp(14px,2vh,20px);">
+        <div class="kp-val">1.81×</div>
+        <div class="kp-lbl">Diversification ratio</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-right">
+    <span class="sec-tag fd" style="--d:4">Marginal risk contribution — equal-weight</span>
+    <table class="tbl fd" style="--d:5; margin-top:16px;">
+      <thead>
+        <tr>
+          <th>Ticker</th>
+          <th class="r">Weight</th>
+          <th class="r">σᵢ</th>
+          <th class="r">MCR</th>
+          <th class="r">% of portfolio risk</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="hl">
+          <td><strong>MFL</strong></td>
+          <td class="r mono">12.50%</td>
+          <td class="r mono">59.64%</td>
+          <td class="r mono">0.38</td>
+          <td class="r purple-text">22.43%</td>
+        </tr>
+        <tr>
+          <td><strong>FCEPL</strong></td>
+          <td class="r mono">12.50%</td>
+          <td class="r mono">49.90%</td>
+          <td class="r mono">0.33</td>
+          <td class="r">19.32%</td>
+        </tr>
+        <tr>
+          <td><strong>SHEZ</strong></td>
+          <td class="r mono">12.50%</td>
+          <td class="r mono">51.26%</td>
+          <td class="r mono">0.30</td>
+          <td class="r">17.96%</td>
+        </tr>
+        <tr>
+          <td><strong>NATF</strong></td>
+          <td class="r mono">12.50%</td>
+          <td class="r mono">40.04%</td>
+          <td class="r mono">0.24</td>
+          <td class="r">14.13%</td>
+        </tr>
+        <tr>
+          <td><strong>COLG</strong></td>
+          <td class="r mono">12.50%</td>
+          <td class="r mono">23.84%</td>
+          <td class="r mono">0.13</td>
+          <td class="r">7.46%</td>
+        </tr>
+        <tr>
+          <td><strong>RMPL</strong></td>
+          <td class="r mono">12.50%</td>
+          <td class="r mono">30.86%</td>
+          <td class="r mono">0.12</td>
+          <td class="r">7.25%</td>
+        </tr>
+        <tr>
+          <td><strong>NESTLE</strong></td>
+          <td class="r mono">12.50%</td>
+          <td class="r mono">23.67%</td>
+          <td class="r mono">0.10</td>
+          <td class="r">6.08%</td>
+        </tr>
+        <tr class="hl">
+          <td><strong>UPFL</strong></td>
+          <td class="r mono">12.50%</td>
+          <td class="r mono">25.59%</td>
+          <td class="r mono">0.09</td>
+          <td class="r">5.37%</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="body-text fd" style="--d:9; margin-top:10px; color:var(--g400);">
+      MFL contributes most risk (22.43%) despite equal weight; UPFL contributes least (5.37%).
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     08 · THREE SCHEMES COMPARED
+══════════════════════════════════════════════════════ -->
+<section class="slide s-full" data-i="7">
+  <span class="sec-tag fd" style="--d:0">07 — Portfolio Scheme Comparison</span>
+
+  <h2 class="h2" style="margin-bottom: clamp(20px,3vh,36px);">
+    <span class="ln"><span class="ln-i" style="--d:1">Three construction</span></span>
+    <span class="ln"><span class="ln-i" style="--d:2">schemes <em>compared.</em></span></span>
+  </h2>
+
+  <div class="fd" style="--d:3; flex:1; display:flex; flex-direction:column; justify-content:center;">
+    <div class="scheme-row">
+      <div class="scheme-item head">
+        <div class="scheme-col dim">Scheme</div>
+        <div class="scheme-col dim r">Ann. Return</div>
+        <div class="scheme-col dim r">Volatility σ</div>
+        <div class="scheme-col dim r">Sharpe</div>
+        <div class="scheme-col dim r">Div. Ratio</div>
+      </div>
+      <div class="scheme-item">
+        <div class="scheme-col lbl">A — Equal-weight</div>
+        <div class="scheme-col r">28.79%</div>
+        <div class="scheme-col r">21.07%</div>
+        <div class="scheme-col r">0.80</div>
+        <div class="scheme-col r">1.81×</div>
+      </div>
+      <div class="scheme-item">
+        <div class="scheme-col lbl">B — Inverse-volatility</div>
+        <div class="scheme-col r">21.15%</div>
+        <div class="scheme-col r">18.06%</div>
+        <div class="scheme-col r">0.51</div>
+        <div class="scheme-col r">1.87×</div>
+      </div>
+      <div class="scheme-item rec">
+        <div class="scheme-col lbl" style="color:var(--purple);">C — Signal-weighted ★</div>
+        <div class="scheme-col r purple-text">26.11%</div>
+        <div class="scheme-col r purple-text">19.01%</div>
+        <div class="scheme-col r purple-text">0.74</div>
+        <div class="scheme-col r purple-text">1.87×</div>
+      </div>
+    </div>
+
+    <div class="rule" style="margin-top: clamp(24px,3.5vh,40px);"></div>
+
+    <div style="margin-top: clamp(16px,2.5vh,28px); display:grid; grid-template-columns:1fr 1fr 1fr; gap:clamp(20px,3vw,40px);">
+      <div>
+        <p class="body-text" style="color:var(--g500); font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:8px;">Scheme A</p>
+        <p class="body-text">Baseline. Highest return but highest volatility. No signal weighting.</p>
+      </div>
+      <div>
+        <p class="body-text" style="color:var(--g500); font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:8px;">Scheme B</p>
+        <p class="body-text">Lowest volatility. Overweights low-σ names. Sacrifices 7.6 pp of return for 300 bps σ saving.</p>
+      </div>
+      <div>
+        <p class="body-text" style="color:var(--purple); font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:8px;">Scheme C — Recommended</p>
+        <p class="body-text">Z-scored composite of Sharpe, DDM premium, and avg pairwise ρ. Retains 91% of equal-weight return with 200 bps σ reduction.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     09 · RECOMMENDED WEIGHTS
+══════════════════════════════════════════════════════ -->
+<section class="slide col-2" data-i="8">
+  <div class="col-left">
+    <span class="sec-tag fd" style="--d:0">08 — Recommended Portfolio</span>
+    <h2 class="h2">
+      <span class="ln"><span class="ln-i" style="--d:1">Signal-weighted</span></span>
+      <span class="ln"><span class="ln-i" style="--d:2">allocation</span></span>
+      <span class="ln"><span class="ln-i" style="--d:3"><em>rationale.</em></span></span>
     </h2>
 
-    <div class="close-foot">
-      <p class="signoff fade" style="--d:6">
-        We went into Skyline expecting to help patients. We came out aware that the system itself needed help — and that anyone, including us, can choose to <em>lead from where we stand.</em>
-      </p>
-      <span class="thanks fade" style="--d:8">Thank you.</span>
+    <div class="stat-row fd" style="--d:4; margin-top:clamp(20px,3vh,36px);">
+      <div class="stat-item">
+        <span class="stat-num purple">26.11%</span>
+        <span class="stat-cap">Annual return · 91% of equal-weight baseline</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">19.01%</span>
+        <span class="stat-cap">Volatility σ · 200 bps below equal-weight</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">0.54β</span>
+        <span class="stat-cap">Portfolio beta · defensive, below-market sensitivity</span>
+      </div>
     </div>
-  </section>
+  </div>
+
+  <div class="col-right">
+    <span class="sec-tag fd" style="--d:4">Weight allocation</span>
+    <div class="bar-wrap fd" style="--d:5; margin-top:16px;">
+      <div class="bar-row">
+        <span class="bar-label">UPFL</span>
+        <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+        <span class="bar-val">25.0%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">RMPL</span>
+        <div class="bar-track"><div class="bar-fill" style="width:80%"></div></div>
+        <span class="bar-val">20.0%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">NATF</span>
+        <div class="bar-track"><div class="bar-fill" style="width:52%"></div></div>
+        <span class="bar-val">13.0%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">MFL</span>
+        <div class="bar-track"><div class="bar-fill lt" style="width:39.2%"></div></div>
+        <span class="bar-val">9.8%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">NESTLE</span>
+        <div class="bar-track"><div class="bar-fill lt" style="width:32.4%"></div></div>
+        <span class="bar-val">8.1%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">COLG</span>
+        <div class="bar-track"><div class="bar-fill lt" style="width:32.4%"></div></div>
+        <span class="bar-val">8.1%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">FCEPL</span>
+        <div class="bar-track"><div class="bar-fill lt" style="width:32.4%"></div></div>
+        <span class="bar-val">8.1%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">SHEZ</span>
+        <div class="bar-track"><div class="bar-fill lt" style="width:32.4%"></div></div>
+        <span class="bar-val">8.1%</span>
+      </div>
+    </div>
+
+    <div class="rule fd" style="--d:8; margin-top:clamp(14px,2vh,22px);"></div>
+    <div class="fd" style="--d:9; margin-top:clamp(12px,1.8vh,18px); display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+      <p class="body-text" style="font-size:12px;"><strong>UPFL 25%:</strong> Highest DDM discount (+417%) with above-average diversification benefit.</p>
+      <p class="body-text" style="font-size:12px;"><strong>RMPL 20%:</strong> DDM undervalued + lowest universe avg ρ (0.03). Best pure diversifier.</p>
+      <p class="body-text" style="font-size:12px;"><strong>NATF 13%:</strong> Rewarded for outstanding Sharpe (1.38) and strong alpha generation.</p>
+      <p class="body-text" style="font-size:12px;"><strong>Remaining 8.1% floor:</strong> Maintains breadth across overvalued or negative-Sharpe names.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     10 · PORTFOLIO BETA & RISK DECOMPOSITION
+══════════════════════════════════════════════════════ -->
+<section class="slide s-full" data-i="9">
+  <span class="sec-tag fd" style="--d:0">09 — Systematic vs Unsystematic Risk</span>
+
+  <h2 class="h2" style="margin-bottom:clamp(20px,3vh,36px);">
+    <span class="ln"><span class="ln-i" style="--d:1">Portfolio beta &amp; risk</span></span>
+    <span class="ln"><span class="ln-i" style="--d:2"><em>decomposition.</em></span></span>
+  </h2>
+
+  <div class="fd" style="--d:3; flex:1; display:flex; flex-direction:column; gap:clamp(14px,2.2vh,24px);">
+
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Scheme</th>
+          <th class="r">Portfolio β</th>
+          <th class="r">Risk premium</th>
+          <th class="r">SML required return</th>
+          <th class="r">Systematic risk share</th>
+          <th class="r">Diversification ratio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>A — Equal-weight</td>
+          <td class="r mono">0.61</td>
+          <td class="r mono">3.65%</td>
+          <td class="r mono">15.65%</td>
+          <td class="r mono">~14%</td>
+          <td class="r mono">1.81×</td>
+        </tr>
+        <tr>
+          <td>B — Inverse-volatility</td>
+          <td class="r mono">0.51</td>
+          <td class="r mono">3.08%</td>
+          <td class="r mono">15.08%</td>
+          <td class="r mono">~13%</td>
+          <td class="r mono">1.87×</td>
+        </tr>
+        <tr class="hl">
+          <td><strong>C — Signal-weighted (rec.)</strong></td>
+          <td class="r mono purple-text">0.54</td>
+          <td class="r mono purple-text">3.22%</td>
+          <td class="r mono purple-text">15.22%</td>
+          <td class="r mono purple-text">~14%</td>
+          <td class="r mono purple-text">1.87×</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="rule"></div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:clamp(20px,3vw,40px);">
+      <div>
+        <p class="body-text" style="font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--g400); margin-bottom:10px;">Variance decomposition</p>
+        <p class="body-text">Systematic (β-related) risk accounts for approximately <strong>14%</strong> of total portfolio variance. The remaining <strong>86%</strong> is unsystematic — diversifiable through cross-asset allocation. This confirms the diversification benefit is structural, not incidental.</p>
+      </div>
+      <div>
+        <p class="body-text" style="font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--g400); margin-bottom:10px;">Efficient frontier — Monte Carlo (5,000 trials)</p>
+        <p class="body-text">All weight combinations simulated. Signal-weighted scheme (C) plots near-frontier with the best return-to-risk trade-off across the three schemes. Max-Sharpe portfolio exists on the frontier; the signal approach approximates it without overfitting.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     11 · SCENARIO ANALYSIS
+══════════════════════════════════════════════════════ -->
+<section class="slide col-2" data-i="10">
+  <div class="col-left">
+    <span class="sec-tag fd" style="--d:0">10 — Scenario Analysis</span>
+    <h2 class="h2">
+      <span class="ln"><span class="ln-i" style="--d:1">KSE-100 regime</span></span>
+      <span class="ln"><span class="ln-i" style="--d:2">stress <em>testing.</em></span></span>
+    </h2>
+    <p class="body-text fd" style="--d:3; margin-top:clamp(14px,2vh,20px);">
+      Monthly KSE-100 returns binned into three market regimes. Probability-weighted conditional returns computed per stock.
+    </p>
+    <div class="stat-row fd" style="--d:4; margin-top:clamp(18px,2.8vh,32px);">
+      <div class="stat-item">
+        <span class="stat-num">~86%</span>
+        <span class="stat-cap">of single-stock risk is unsystematic and diversifiable</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num purple">0.54β</span>
+        <span class="stat-cap">Portfolio beta — defensive posture in all regimes</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-right">
+    <div class="scenario-strip fd" style="--d:4">
+      <div class="scen-item">
+        <div class="scen-name">Weak</div>
+        <div class="scen-prob">10%</div>
+        <div class="scen-desc">KSE-100 monthly &lt; −2.5%. MFL and COLG record deepest drawdowns. SHEZ is uniquely resilient — positive return even in this regime.</div>
+      </div>
+      <div class="scen-item">
+        <div class="scen-name">Normal</div>
+        <div class="scen-prob purple">70%</div>
+        <div class="scen-desc">KSE-100 monthly −2.5% to +2.0%. Base case — where the majority of the strategy's expected return is generated. Portfolio beta of 0.54 limits downside capture.</div>
+      </div>
+      <div class="scen-item" style="border-bottom:none;">
+        <div class="scen-name">Strong</div>
+        <div class="scen-prob">20%</div>
+        <div class="scen-desc">KSE-100 monthly &gt; +2.0%. High-beta names (MFL β 0.95, NATF β 0.84, SHEZ β 0.87) amplify gains. NATF leads in bull-market periods.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     12 · MAX DRAWDOWN
+══════════════════════════════════════════════════════ -->
+<section class="slide s-full" data-i="11">
+  <span class="sec-tag fd" style="--d:0">11 — Drawdown &amp; Tail Risk</span>
+
+  <h2 class="h2" style="margin-bottom:clamp(20px,3vh,36px);">
+    <span class="ln"><span class="ln-i" style="--d:1">Maximum drawdown</span></span>
+    <span class="ln"><span class="ln-i" style="--d:2">from <em>running peak.</em></span></span>
+  </h2>
+
+  <div class="fd" style="--d:3; flex:1; overflow:auto;">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Ticker</th>
+          <th>Company</th>
+          <th class="r">Ann. Return</th>
+          <th class="r">Volatility σ</th>
+          <th class="r">Max drawdown</th>
+          <th>Tail risk profile</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="hl">
+          <td><strong>MFL</strong></td>
+          <td>Matco Foods</td>
+          <td class="r pos">50.90%</td>
+          <td class="r">59.64%</td>
+          <td class="r neg">~(40%)</td>
+          <td>Highest tail risk — high return, high drawdown</td>
+        </tr>
+        <tr>
+          <td><strong>COLG</strong></td>
+          <td>Colgate-Palmolive</td>
+          <td class="r neg">(10.05%)</td>
+          <td class="r">23.84%</td>
+          <td class="r neg">~(35%)</td>
+          <td>Negative return and deep drawdown</td>
+        </tr>
+        <tr>
+          <td><strong>SHEZ</strong></td>
+          <td>Shezan International</td>
+          <td class="r pos">57.16%</td>
+          <td class="r">51.26%</td>
+          <td class="r neg">~(30%)</td>
+          <td>Strong return offsets drawdown risk</td>
+        </tr>
+        <tr>
+          <td><strong>NATF</strong></td>
+          <td>National Foods</td>
+          <td class="r pos">67.12%</td>
+          <td class="r">40.04%</td>
+          <td class="r neg">~(25%)</td>
+          <td>Best return per unit of drawdown</td>
+        </tr>
+        <tr>
+          <td><strong>UPFL</strong></td>
+          <td>Unilever Pakistan</td>
+          <td class="r">9.91%</td>
+          <td class="r">25.59%</td>
+          <td class="r neg">~(20%)</td>
+          <td>Moderate drawdown, low return</td>
+        </tr>
+        <tr>
+          <td><strong>FCEPL</strong></td>
+          <td>FrieslandCampina</td>
+          <td class="r pos">35.77%</td>
+          <td class="r">49.90%</td>
+          <td class="r neg">~(18%)</td>
+          <td>Good return with contained drawdown</td>
+        </tr>
+        <tr>
+          <td><strong>RMPL</strong></td>
+          <td>Rahan Maize</td>
+          <td class="r">14.18%</td>
+          <td class="r">30.86%</td>
+          <td class="r neg">~(12%)</td>
+          <td>Low drawdown; best for risk control</td>
+        </tr>
+        <tr class="hl">
+          <td><strong>NESTLE</strong></td>
+          <td>Nestle Pakistan</td>
+          <td class="r">5.35%</td>
+          <td class="r">23.67%</td>
+          <td class="r">~(8%)</td>
+          <td>Lowest drawdown in universe</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="body-text fd" style="--d:8; margin-top:14px; color:var(--g400);">
+    Drawdown measured from running peak at each date · NESTLE's defensive character reflects low β (0.24) · MFL's 22.43% MCR in equal-weight portfolio driven by this drawdown profile
+  </p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     13 · NORMALISED PERFORMANCE vs BENCHMARK
+══════════════════════════════════════════════════════ -->
+<section class="slide s-full" data-i="12">
+  <span class="sec-tag fd" style="--d:0">12 — Normalised Price Performance</span>
+
+  <h2 class="h2" style="margin-bottom:clamp(20px,3vh,36px);">
+    <span class="ln"><span class="ln-i" style="--d:1">Total return index,</span></span>
+    <span class="ln"><span class="ln-i" style="--d:2">base 100 · Nov <em>2023.</em></span></span>
+  </h2>
+
+  <div class="fd" style="--d:3; flex:1; overflow:auto;">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Ticker</th>
+          <th>Company</th>
+          <th class="r">Base (Nov 2023)</th>
+          <th class="r">Approx. final index</th>
+          <th class="r">Total return</th>
+          <th>vs KSE-100 benchmark</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="hl">
+          <td><strong>NATF</strong></td>
+          <td>National Foods</td>
+          <td class="r mono">100</td>
+          <td class="r mono purple-text">~370</td>
+          <td class="r pos purple-text">+270%</td>
+          <td>Significant outperformance</td>
+        </tr>
+        <tr>
+          <td><strong>SHEZ</strong></td>
+          <td>Shezan International</td>
+          <td class="r mono">100</td>
+          <td class="r mono">~300</td>
+          <td class="r pos">+200%</td>
+          <td>Strong outperformance</td>
+        </tr>
+        <tr>
+          <td><strong>UPFL</strong></td>
+          <td>Unilever Pakistan</td>
+          <td class="r mono">100</td>
+          <td class="r mono">~220</td>
+          <td class="r pos">+120%</td>
+          <td>Moderate outperformance</td>
+        </tr>
+        <tr>
+          <td><strong>RMPL</strong></td>
+          <td>Rahan Maize</td>
+          <td class="r mono">100</td>
+          <td class="r mono">~200</td>
+          <td class="r pos">+100%</td>
+          <td>Moderate outperformance</td>
+        </tr>
+        <tr>
+          <td><strong>FCEPL</strong></td>
+          <td>FrieslandCampina</td>
+          <td class="r mono">100</td>
+          <td class="r mono">~190</td>
+          <td class="r pos">+90%</td>
+          <td>In-line with benchmark</td>
+        </tr>
+        <tr>
+          <td><strong>MFL</strong></td>
+          <td>Matco Foods</td>
+          <td class="r mono">100</td>
+          <td class="r mono">~180</td>
+          <td class="r pos">+80%</td>
+          <td>In-line with benchmark</td>
+        </tr>
+        <tr>
+          <td><strong>NESTLE</strong></td>
+          <td>Nestle Pakistan</td>
+          <td class="r mono">100</td>
+          <td class="r mono">~115</td>
+          <td class="r">+15%</td>
+          <td>Significant underperformance</td>
+        </tr>
+        <tr class="hl">
+          <td><strong>COLG</strong></td>
+          <td>Colgate-Palmolive</td>
+          <td class="r mono">100</td>
+          <td class="r mono">~90</td>
+          <td class="r neg">(10%)</td>
+          <td>Only decliner in universe</td>
+        </tr>
+        <tr class="hl-top">
+          <td><strong>KSE-100</strong></td>
+          <td>Benchmark index</td>
+          <td class="r mono">100</td>
+          <td class="r mono">~200</td>
+          <td class="r">+100%</td>
+          <td>Benchmark reference</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="body-text fd" style="--d:8; margin-top:14px; color:var(--g400);">
+    Normalised to 100 at 01 Nov 2023. Final index values are approximate from PDF-reported figures. NATF led at ~3.7× base; COLG declined to ~0.9× base over the window.
+  </p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     14 · CLOSE
+══════════════════════════════════════════════════════ -->
+<section class="slide slide-close" data-i="13">
+  <div>
+    <span class="fd" style="--d:0; font-size:10px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.35);">Conclusion</span>
+    <h2 class="close-h" style="margin-top:14px;">
+      <span class="ln"><span class="ln-i" style="--d:1">Low correlation.</span></span>
+      <span class="ln"><span class="ln-i" style="--d:2">Strong <em>alpha.</em></span></span>
+      <span class="ln"><span class="ln-i" style="--d:3">Real <em>value.</em></span></span>
+    </h2>
+  </div>
+
+  <div class="close-foot fd" style="--d:6">
+    <p class="close-signoff">
+      PSX's Food &amp; Personal Care sector offers exceptional diversification within a single defensive sector. NATF, SHEZ, MFL, and FCEPL each earned <em>17–50 pp above their CAPM-required return</em> over the window. The signal-weighted portfolio captures this alpha at lower volatility than an equal-weight baseline. <em>Quarterly rebalancing recommended.</em>
+    </p>
+    <span class="close-date">Business Finance · 12 May 2026</span>
+  </div>
+</section>
 
 </main>
 
-<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+<div class="prog"><div class="prog-bar" id="progressBar"></div></div>
 
 <script>
-  (function () {
-    const slides = Array.from(document.querySelectorAll('.slide'));
-    const total = slides.length;
-    const counter = document.getElementById('counter');
-    const progressBar = document.getElementById('progressBar');
-    let current = 0;
-    let lock = false;
+/* ── DDM Grouped Bar Chart (log scale) ── */
+function drawDDMChart() {
+  const canvas = document.getElementById('ddmChart');
+  if (!canvas) return;
+  const dpr  = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  canvas.width  = rect.width  * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
 
-    function pad(n) { return String(n).padStart(2, '0'); }
+  const W = rect.width;
+  const H = rect.height;
+  const PAD = { top: 32, right: 24, bottom: 52, left: 62 };
+  const plotW = W - PAD.left - PAD.right;
+  const plotH = H - PAD.top  - PAD.bottom;
 
-    function updateChrome() {
-      counter.textContent = pad(current + 1) + ' / ' + pad(total);
-      progressBar.style.width = ((current + 1) / total * 100) + '%';
+  const PURPLE     = '#5B3FE8';
+  const PURPLE_LT  = 'rgba(91,63,232,0.38)';
+  const RED        = 'rgba(192,57,43,0.72)';
+  const RED_DARK   = 'rgba(192,57,43,1)';
+  const G200       = '#E8E8E8';
+  const G400       = '#B0B0B0';
+  const G500       = '#888888';
+  const BLACK      = '#0D0D0D';
+
+  /* data: [ticker, marketPrice, ddmIntrinsic, pctLabel, overvalued] */
+  const stocks = [
+    { t:'UPFL',   mkt:5083,   ddm:26268,  pct:'+114%', over:false },
+    { t:'COLG',   mkt:1061,   ddm:1548,   pct:'+42%',  over:false },
+    { t:'RMPL',   mkt:8912,   ddm:11290,  pct:'+18%',  over:false },
+    { t:'NATF',   mkt:382,    ddm:423,    pct:'+11%',  over:false },
+    { t:'NESTLE', mkt:7568,   ddm:5153,   pct:'-32%',  over:true  },
+    { t:'FCEPL',  mkt:108,    ddm:39,     pct:'-62%',  over:true  },
+    { t:'SHEZ',   mkt:254,    ddm:68,     pct:'-72%',  over:true  },
+  ];
+
+  /* log10 scale */
+  const logMin = 1;   /* 10^1 = 10   */
+  const logMax = 5;   /* 10^5 = 100k */
+
+  function yPx(v) {
+    const lv = Math.log10(Math.max(v, 10));
+    return PAD.top + (1 - (lv - logMin) / (logMax - logMin)) * plotH;
+  }
+
+  /* y-axis grid + labels */
+  const yTicks = [10, 100, 1000, 10000, 100000];
+  const yLabels = ['10', '100', '1k', '10k', '100k'];
+  ctx.font = '500 10.5px Inter, system-ui, sans-serif';
+  yTicks.forEach((v, idx) => {
+    const py = yPx(v);
+    ctx.strokeStyle = G200;
+    ctx.lineWidth   = 1;
+    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(PAD.left, py); ctx.lineTo(PAD.left + plotW, py); ctx.stroke();
+    ctx.fillStyle  = G500;
+    ctx.textAlign  = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(yLabels[idx], PAD.left - 8, py);
+  });
+
+  /* y-axis title */
+  ctx.save();
+  ctx.translate(13, PAD.top + plotH / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = G500;
+  ctx.font = '500 10px Inter, system-ui, sans-serif';
+  ctx.fillText('Price per share (PKR, log scale)', 0, 0);
+  ctx.restore();
+
+  /* bars */
+  const n      = stocks.length;
+  const slotW  = plotW / n;
+  const barW   = Math.min(slotW * 0.28, 28);
+  const gap    = barW * 0.35;
+  const baseY  = yPx(10);
+
+  stocks.forEach((s, i) => {
+    const cx   = PAD.left + slotW * i + slotW / 2;
+    const mktY = yPx(s.mkt);
+    const ddmY = yPx(s.ddm);
+
+    /* market price bar — always light purple */
+    ctx.fillStyle = PURPLE_LT;
+    ctx.fillRect(cx - gap - barW, mktY, barW, baseY - mktY);
+
+    /* ddm bar */
+    ctx.fillStyle = s.over ? RED_DARK : PURPLE;
+    ctx.fillRect(cx + gap, ddmY, barW, baseY - ddmY);
+
+    /* % label above the taller bar */
+    const labelY = Math.min(mktY, ddmY) - 6;
+    ctx.font      = '700 11px Inter, system-ui, sans-serif';
+    ctx.fillStyle = s.over ? '#8b2020' : PURPLE;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText(s.pct, cx, labelY);
+
+    /* ticker label */
+    ctx.font      = '600 11.5px Inter, system-ui, sans-serif';
+    ctx.fillStyle = BLACK;
+    ctx.textBaseline = 'top';
+    ctx.fillText(s.t, cx, PAD.top + plotH + 10);
+  });
+}
+
+window.addEventListener('resize', () => {
+  const c = document.getElementById('ddmChart');
+  if (c) { c.width = 0; c.height = 0; drawDDMChart(); }
+});
+</script>
+
+<script>
+/* ── Correlation Heatmap ── */
+function drawHeatmap() {
+  const canvas = document.getElementById('hmChart');
+  if (!canvas) return;
+  const dpr  = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  canvas.width  = rect.width  * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const W = rect.width;
+  const H = rect.height;
+
+  const labels = ['NESTLE','COLG','UPFL','RMPL','NATF','FCEPL','SHEZ','MFL'];
+  const n = labels.length;
+
+  /* full 8×8 matrix from the figure */
+  const mat = [
+  //  NESTLE COLG  UPFL  RMPL  NATF  FCEPL SHEZ  MFL
+    [ 1.00, 0.23, 0.21, 0.21, 0.15, 0.21, 0.16, 0.13 ], // NESTLE
+    [ 0.23, 1.00, 0.13, 0.18, 0.24, 0.35, 0.24, 0.19 ], // COLG
+    [ 0.21, 0.13, 1.00, 0.03, 0.18, 0.07, 0.16, 0.11 ], // UPFL
+    [ 0.21, 0.18, 0.03, 1.00, 0.14, 0.15, 0.14, 0.10 ], // RMPL
+    [ 0.15, 0.24, 0.18, 0.14, 1.00, 0.28, 0.23, 0.27 ], // NATF
+    [ 0.21, 0.35, 0.07, 0.15, 0.28, 1.00, 0.23, 0.30 ], // FCEPL
+    [ 0.16, 0.24, 0.16, 0.14, 0.23, 0.23, 1.00, 0.16 ], // SHEZ
+    [ 0.13, 0.19, 0.11, 0.10, 0.27, 0.30, 0.16, 1.00 ], // MFL
+  ];
+
+  /* colour scale: low→white, high→purple; diagonal→very dark purple */
+  function cellColor(v, isDiag) {
+    if (isDiag) return '#3a28b0';
+    /* interpolate white (#fff) → purple (#5B3FE8) linearly on v 0→1 */
+    const t = Math.max(0, Math.min(1, v));
+    const r = Math.round(255 + (91  - 255) * t);
+    const g = Math.round(255 + (63  - 255) * t);
+    const b = Math.round(255 + (232 - 255) * t);
+    return `rgb(${r},${g},${b})`;
+  }
+
+  const LABEL_W = 52;   /* space for row labels on left */
+  const LABEL_H = 28;   /* space for col labels on top */
+  const PAD_R   = 4;
+  const PAD_B   = 4;
+  const gridW = W - LABEL_W - PAD_R;
+  const gridH = H - LABEL_H - PAD_B;
+  const cellW = gridW / n;
+  const cellH = gridH / n;
+
+  const FONT = '500 11px Inter, system-ui, sans-serif';
+  const FONT_SM = '400 10px Inter, system-ui, sans-serif';
+
+  /* column labels (top) */
+  ctx.font = '600 11px Inter, system-ui, sans-serif';
+  ctx.fillStyle = '#333';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  labels.forEach((lbl, j) => {
+    const cx = LABEL_W + cellW * j + cellW / 2;
+    ctx.fillText(lbl, cx, LABEL_H / 2);
+  });
+
+  /* row labels (left) */
+  ctx.textAlign = 'right';
+  labels.forEach((lbl, i) => {
+    const cy = LABEL_H + cellH * i + cellH / 2;
+    ctx.fillText(lbl, LABEL_W - 6, cy);
+  });
+
+  /* cells */
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      const v     = mat[i][j];
+      const isDiag = i === j;
+      const x = LABEL_W + cellW * j;
+      const y = LABEL_H + cellH * i;
+
+      /* fill */
+      ctx.fillStyle = cellColor(v, isDiag);
+      ctx.fillRect(x, y, cellW, cellH);
+
+      /* white grid lines */
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth   = 2;
+      ctx.strokeRect(x, y, cellW, cellH);
+
+      /* value text */
+      ctx.font      = isDiag ? '700 11.5px Inter, system-ui, sans-serif' : FONT;
+      ctx.fillStyle = (isDiag || v > 0.22) ? '#ffffff' : '#333333';
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(v.toFixed(2), x + cellW / 2, y + cellH / 2);
     }
+  }
+}
 
-    function go(to) {
-      to = Math.max(0, Math.min(total - 1, to));
-      if (to === current || lock) return;
-      lock = true;
-      slides[current].classList.remove('active');
-      current = to;
-      void slides[current].offsetWidth;
-      slides[current].classList.add('active');
-      updateChrome();
-      setTimeout(() => { lock = false; }, 280);
-    }
+window.addEventListener('resize', () => {
+  const canvas = document.getElementById('hmChart');
+  if (canvas) { canvas.width = 0; canvas.height = 0; drawHeatmap(); }
+});
+</script>
 
-    function next() { go(current + 1); }
-    function prev() { go(current - 1); }
+<script>
+/* ── Box Plot — Daily Return Distribution ── */
+function drawRRChart() {
+  const canvas = document.getElementById('bpChart');
+  if (!canvas) return;
+  const dpr  = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  canvas.width  = rect.width  * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
 
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        (document.documentElement.requestFullscreen ||
-         document.documentElement.webkitRequestFullscreen ||
-         function () {}).call(document.documentElement);
-      } else {
-        (document.exitFullscreen ||
-         document.webkitExitFullscreen ||
-         function () {}).call(document);
-      }
-    }
+  const W = rect.width;
+  const H = rect.height;
+  const PAD = { top: 16, right: 20, bottom: 40, left: 48 };
+  const plotW = W - PAD.left - PAD.right;
+  const plotH = H - PAD.top  - PAD.bottom;
 
-    window.addEventListener('keydown', (e) => {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      switch (e.key) {
-        case 'ArrowRight':
-        case 'PageDown':
-        case ' ':
-        case 'Spacebar':
-        case 'ArrowDown':
-          e.preventDefault(); next(); break;
-        case 'ArrowLeft':
-        case 'PageUp':
-        case 'ArrowUp':
-          e.preventDefault(); prev(); break;
-        case 'Home':
-          e.preventDefault(); go(0); break;
-        case 'End':
-          e.preventDefault(); go(total - 1); break;
-        case 'f':
-        case 'F':
-          e.preventDefault(); toggleFullscreen(); break;
-      }
+  const PURPLE = '#5B3FE8';
+  const G100   = '#F4F4F4';
+  const G200   = '#E8E8E8';
+  const G400   = '#B0B0B0';
+  const G500   = '#888888';
+  const BLACK  = '#0D0D0D';
+
+  /*  Approximate box-plot statistics read from the figure (all in daily %)
+      Order: sorted by ascending annualised σ (NESTLE→MFL)
+      Fields: [ticker, min-whisker, Q1, median, Q3, max-whisker, annSigma]
+      Outlier dots listed separately below.                                  */
+  const boxes = [
+    { t:'NESTLE', wLo:-2.8, q1:-0.3, med:0.0,  q3:0.3,  wHi:2.2,  sig:23.67 },
+    { t:'COLG',   wLo:-3.0, q1:-0.4, med:-0.05,q3:0.3,  wHi:2.8,  sig:23.84 },
+    { t:'UPFL',   wLo:-3.5, q1:-0.4, med:0.0,  q3:0.35, wHi:2.5,  sig:25.59 },
+    { t:'RMPL',   wLo:-2.8, q1:-0.3, med:-0.05,q3:0.3,  wHi:2.8,  sig:30.86 },
+    { t:'NATF',   wLo:-4.8, q1:-0.6, med:0.0,  q3:0.8,  wHi:4.0,  sig:40.04 },
+    { t:'FCEPL',  wLo:-5.2, q1:-0.7, med:-0.1, q3:0.6,  wHi:5.0,  sig:49.90 },
+    { t:'SHEZ',   wLo:-5.5, q1:-0.7, med:-0.05,q3:0.8,  wHi:5.2,  sig:51.26 },
+    { t:'MFL',    wLo:-7.5, q1:-0.9, med:-0.1, q3:1.1,  wHi:7.0,  sig:59.64 },
+  ];
+
+  /* outlier clusters (sparse dots beyond whiskers) */
+  const outliers = {
+    NESTLE: [-5,-5.5,2.8,3.2,3.8,5,7.5,10,-8,-7],
+    COLG:   [-13,-5.5,-5,3.5,5,7.5,7.5,10,-4],
+    UPFL:   [-8,-6,3,4,5,5.5,10,-10],
+    RMPL:   [-4,-5,3.5,5,5,6,9,14,-6],
+    NATF:   [-8,-9,-10,5,5.5,6,10,-7],
+    FCEPL:  [-10,-11,-17,6,7,8,10,12,-8],
+    SHEZ:   [-7,-8,-9,-10,6,7,9,10,-6],
+    MFL:    [-11,-12,-12,8,9,10,13,16,-8,-9],
+  };
+
+  const yMin = -18, yMax = 17;
+  const n = boxes.length;
+  const slotW = plotW / n;
+  const boxW  = Math.min(slotW * 0.62, 58);
+
+  function yPx(v) { return PAD.top + (yMax - v) / (yMax - yMin) * plotH; }
+  function xCenter(i) { return PAD.left + slotW * i + slotW / 2; }
+
+  /* grid + y-axis labels */
+  const yTicks = [-15,-10,-5,0,5,10,15];
+  ctx.font = '600 11px Inter, system-ui, sans-serif';
+  yTicks.forEach(y => {
+    const py = yPx(y);
+    ctx.strokeStyle = y === 0 ? '#888888' : G200;
+    ctx.lineWidth   = y === 0 ? 1.5 : 1;
+    ctx.setLineDash(y === 0 ? [5,4] : []);
+    ctx.beginPath(); ctx.moveTo(PAD.left, py); ctx.lineTo(PAD.left + plotW, py); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle  = '#555555';
+    ctx.textAlign  = 'right';
+    ctx.fillText(y, PAD.left - 8, py + 4);
+  });
+
+  /* y-axis title */
+  ctx.save();
+  ctx.translate(11, PAD.top + plotH / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#555555';
+  ctx.font = '500 11px Inter, system-ui, sans-serif';
+  ctx.fillText('Daily return (%)', 0, 0);
+  ctx.restore();
+
+  /* draw each box */
+  boxes.forEach((b, i) => {
+    const cx  = xCenter(i);
+    const x0  = cx - boxW / 2;
+    const isNATF = b.t === 'NATF';
+
+    /* outlier dots */
+    (outliers[b.t] || []).forEach(v => {
+      const oy = yPx(v);
+      if (oy < PAD.top || oy > PAD.top + plotH) return;
+      ctx.beginPath();
+      ctx.arc(cx, oy, 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#999999';
+      ctx.globalAlpha = 0.7;
+      ctx.fill();
+      ctx.globalAlpha = 1;
     });
 
-    document.getElementById('deck').addEventListener('click', (e) => {
-      if (e.target.closest('a')) return;
-      const x = e.clientX;
-      if (x < window.innerWidth * 0.32) prev();
-      else next();
-    });
+    /* whisker lines */
+    ctx.strokeStyle = BLACK;
+    ctx.lineWidth   = 2;
+    /* lower whisker */
+    ctx.beginPath(); ctx.moveTo(cx, yPx(b.wLo)); ctx.lineTo(cx, yPx(b.q1)); ctx.stroke();
+    /* upper whisker */
+    ctx.beginPath(); ctx.moveTo(cx, yPx(b.q3)); ctx.lineTo(cx, yPx(b.wHi)); ctx.stroke();
+    /* whisker caps */
+    const capW = boxW * 0.42;
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(cx - capW, yPx(b.wLo)); ctx.lineTo(cx + capW, yPx(b.wLo)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx - capW, yPx(b.wHi)); ctx.lineTo(cx + capW, yPx(b.wHi)); ctx.stroke();
 
-    let tx = 0;
-    window.addEventListener('touchstart', (e) => { tx = e.touches[0].clientX; }, { passive: true });
-    window.addEventListener('touchend', (e) => {
-      const dx = (e.changedTouches[0].clientX) - tx;
-      if (Math.abs(dx) > 50) (dx < 0 ? next : prev)();
-    }, { passive: true });
+    /* IQR box fill */
+    const boxTop = yPx(b.q3);
+    const boxBot = yPx(b.q1);
+    const boxH   = boxBot - boxTop;
+    ctx.fillStyle   = PURPLE;
+    ctx.globalAlpha = isNATF ? 0.30 : 0.18;
+    ctx.fillRect(x0, boxTop, boxW, boxH);
+    ctx.globalAlpha = 1;
 
-    updateChrome();
-  })();
+    /* IQR box border */
+    ctx.strokeStyle = PURPLE;
+    ctx.lineWidth   = isNATF ? 2.8 : 2;
+    ctx.strokeRect(x0, boxTop, boxW, boxH);
+
+    /* median line */
+    ctx.strokeStyle = PURPLE;
+    ctx.lineWidth   = isNATF ? 4 : 3;
+    ctx.beginPath();
+    ctx.moveTo(x0, yPx(b.med));
+    ctx.lineTo(x0 + boxW, yPx(b.med));
+    ctx.stroke();
+
+    /* ticker label */
+    ctx.font      = isNATF ? '700 12.5px Inter, system-ui, sans-serif'
+                           : '600 11.5px Inter, system-ui, sans-serif';
+    ctx.fillStyle = isNATF ? PURPLE : BLACK;
+    ctx.textAlign = 'center';
+    ctx.fillText(b.t, cx, PAD.top + plotH + 16);
+
+    /* σ annotation below ticker */
+    ctx.font      = '500 10px Inter, system-ui, sans-serif';
+    ctx.fillStyle = '#777777';
+    ctx.fillText('σ ' + b.sig + '%', cx, PAD.top + plotH + 30);
+  });
+}
+
+window.addEventListener('resize', () => {
+  const canvas = document.getElementById('bpChart');
+  if (canvas) { canvas.width = 0; canvas.height = 0; drawRRChart(); }
+});
+</script>
+
+<script>
+/* ── Security Market Line ── */
+function drawSMLChart() {
+  const canvas = document.getElementById('smlChart');
+  if (!canvas) return;
+  const dpr  = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  canvas.width  = rect.width  * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const W = rect.width, H = rect.height;
+
+  const PURPLE   = '#5B3FE8';
+  const PURPLE_LT= '#C0B4F8';
+  const G200     = '#E8E8E8';
+  const G400     = '#B0B0B0';
+  const G500     = '#888888';
+  const BLACK    = '#0D0D0D';
+  const RED      = '#C0392B';
+
+  const PAD = { top: 28, right: 32, bottom: 52, left: 58 };
+  const plotW = W - PAD.left - PAD.right;
+  const plotH = H - PAD.top  - PAD.bottom;
+
+  /* axis ranges */
+  const betaMin = 0,    betaMax = 1.2;
+  const retMin  = 0,    retMax  = 80;   /* % */
+  const rf      = 12.0, mrp     = 6.0;
+
+  function xPx(b)  { return PAD.left + (b - betaMin) / (betaMax - betaMin) * plotW; }
+  function yPx(r)  { return PAD.top  + (1 - (r - retMin) / (retMax - retMin)) * plotH; }
+  function smlY(b) { return rf + b * mrp; }
+
+  /* grid lines */
+  ctx.strokeStyle = G200; ctx.lineWidth = 1; ctx.setLineDash([]);
+  [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2].forEach(b => {
+    const x = xPx(b);
+    ctx.beginPath(); ctx.moveTo(x, PAD.top); ctx.lineTo(x, PAD.top + plotH); ctx.stroke();
+  });
+  [0, 10, 20, 30, 40, 50, 60, 70, 80].forEach(r => {
+    const y = yPx(r);
+    ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(PAD.left + plotW, y); ctx.stroke();
+  });
+
+  /* axes */
+  ctx.strokeStyle = '#CCCCCC'; ctx.lineWidth = 1.5; ctx.setLineDash([]);
+  ctx.beginPath(); ctx.moveTo(PAD.left, PAD.top); ctx.lineTo(PAD.left, PAD.top + plotH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(PAD.left, PAD.top + plotH); ctx.lineTo(PAD.left + plotW, PAD.top + plotH); ctx.stroke();
+
+  /* axis labels */
+  ctx.font = '500 10px Inter, system-ui, sans-serif';
+  ctx.fillStyle = G500; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+  [0, 10, 20, 30, 40, 50, 60, 70, 80].forEach(r => {
+    ctx.fillText(r + '%', PAD.left - 6, yPx(r));
+  });
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2].forEach(b => {
+    ctx.fillText(b.toFixed(1), xPx(b), PAD.top + plotH + 6);
+  });
+
+  /* axis titles */
+  ctx.save();
+  ctx.translate(13, PAD.top + plotH / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = G500; ctx.font = '500 10px Inter, system-ui, sans-serif';
+  ctx.fillText('Realised return (%)', 0, 0);
+  ctx.restore();
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  ctx.fillText('β (Beta)', PAD.left + plotW / 2, PAD.top + plotH + 30);
+
+  /* SML line */
+  ctx.strokeStyle = PURPLE; ctx.lineWidth = 2; ctx.setLineDash([]);
+  ctx.beginPath();
+  ctx.moveTo(xPx(betaMin), yPx(smlY(betaMin)));
+  ctx.lineTo(xPx(betaMax), yPx(smlY(betaMax)));
+  ctx.stroke();
+
+  /* SML label */
+  ctx.fillStyle = PURPLE; ctx.font = '600 11px Inter, system-ui, sans-serif';
+  ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+  ctx.fillText('Security Market Line', xPx(0.9) + 6, yPx(smlY(0.9)) - 4);
+
+  /* rf label on y-axis */
+  ctx.fillStyle = G400; ctx.font = '500 10px Inter, system-ui, sans-serif';
+  ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+  ctx.fillText('rf', PAD.left - 6, yPx(rf));
+  ctx.strokeStyle = G400; ctx.lineWidth = 1; ctx.setLineDash([4, 3]);
+  ctx.beginPath(); ctx.moveTo(PAD.left, yPx(rf)); ctx.lineTo(xPx(0), yPx(rf)); ctx.stroke();
+  ctx.setLineDash([]);
+
+  /* beta = 1 dashed vertical */
+  ctx.strokeStyle = G400; ctx.lineWidth = 1; ctx.setLineDash([4, 3]);
+  ctx.beginPath(); ctx.moveTo(xPx(1), PAD.top); ctx.lineTo(xPx(1), PAD.top + plotH); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = G500; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  ctx.fillText('βM=1', xPx(1), PAD.top + plotH + 6);
+
+  /* stocks */
+  const stocks = [
+    { t:'NATF',   b:0.84, r:67.12 },
+    { t:'SHEZ',   b:0.87, r:57.16 },
+    { t:'MFL',    b:0.95, r:50.90 },
+    { t:'FCEPL',  b:0.96, r:35.77 },
+    { t:'RMPL',   b:0.26, r:14.18 },
+    { t:'UPFL',   b:0.33, r:9.91  },
+    { t:'NESTLE', b:0.24, r:5.35  },
+    { t:'COLG',   b:0.40, r:-10.05},
+  ];
+
+  stocks.forEach(s => {
+    const sx = xPx(s.b);
+    const sy = yPx(Math.max(s.r, retMin + 0.5));
+    const aboveSML = s.r > smlY(s.b);
+    const color = aboveSML ? PURPLE : RED;
+
+    /* dot */
+    ctx.beginPath();
+    ctx.arc(sx, sy, 6, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    /* label */
+    ctx.fillStyle = BLACK; ctx.font = '600 10.5px Inter, system-ui, sans-serif';
+    ctx.textAlign = s.b > 0.9 ? 'right' : 'left';
+    ctx.textBaseline = aboveSML ? 'bottom' : 'top';
+    const lx = s.b > 0.9 ? sx - 10 : sx + 10;
+    const ly = aboveSML ? sy - 9 : sy + 9;
+    ctx.fillText(s.t, lx, ly);
+  });
+
+  /* legend */
+  const lx = PAD.left + plotW - 160;
+  const ly = PAD.top + 8;
+  [[PURPLE, 'Above SML (α > 0)'], [RED, 'Below SML (α < 0)']].forEach(([col, lbl], i) => {
+    ctx.beginPath(); ctx.arc(lx, ly + i * 18, 5, 0, Math.PI * 2);
+    ctx.fillStyle = col; ctx.fill();
+    ctx.fillStyle = BLACK; ctx.font = '500 10.5px Inter, system-ui, sans-serif';
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    ctx.fillText(lbl, lx + 10, ly + i * 18);
+  });
+}
+
+window.addEventListener('resize', () => {
+  const c = document.getElementById('smlChart');
+  if (c) { c.width = 0; c.height = 0; drawSMLChart(); }
+});
+</script>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const counter = document.getElementById('counter');
+  const bar = document.getElementById('progressBar');
+  let cur = 0, lock = false;
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function chrome() {
+    counter.textContent = pad(cur + 1) + ' / ' + pad(total);
+    bar.style.width = ((cur + 1) / total * 100) + '%';
+  }
+  function go(to) {
+    to = Math.max(0, Math.min(total - 1, to));
+    if (to === cur || lock) return;
+    lock = true;
+    slides[cur].classList.remove('active');
+    cur = to;
+    void slides[cur].offsetWidth;
+    slides[cur].classList.add('active');
+    chrome();
+    if (slides[cur].querySelector('#bpChart'))  setTimeout(drawRRChart,  60);
+    if (slides[cur].querySelector('#hmChart'))  setTimeout(drawHeatmap,  60);
+    if (slides[cur].querySelector('#ddmChart')) setTimeout(drawDDMChart, 60);
+    if (slides[cur].querySelector('#smlChart')) setTimeout(drawSMLChart, 60);
+    setTimeout(() => { lock = false; }, 260);
+  }
+  function next() { go(cur + 1); }
+  function prev() { go(cur - 1); }
+
+  function fullscreen() {
+    if (!document.fullscreenElement)
+      (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen || function(){}).call(document.documentElement);
+    else
+      (document.exitFullscreen || document.webkitExitFullscreen || function(){}).call(document);
+  }
+
+  window.addEventListener('keydown', e => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    switch (e.key) {
+      case 'ArrowRight': case 'PageDown': case ' ': case 'ArrowDown': e.preventDefault(); next(); break;
+      case 'ArrowLeft': case 'PageUp': case 'ArrowUp': e.preventDefault(); prev(); break;
+      case 'Home': e.preventDefault(); go(0); break;
+      case 'End': e.preventDefault(); go(total - 1); break;
+      case 'f': case 'F': e.preventDefault(); fullscreen(); break;
+    }
+  });
+
+  document.getElementById('deck').addEventListener('click', e => {
+    if (e.target.closest('a')) return;
+    e.clientX < window.innerWidth * 0.3 ? prev() : next();
+  });
+
+  let tx = 0;
+  window.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  window.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 50) dx < 0 ? next() : prev();
+  }, { passive: true });
+
+  chrome();
+  /* draw chart if starting on that slide */
+  if (slides[cur].querySelector('#bpChart'))  setTimeout(drawRRChart,  60);
+  if (slides[cur].querySelector('#hmChart'))  setTimeout(drawHeatmap,  60);
+  if (slides[cur].querySelector('#ddmChart')) setTimeout(drawDDMChart, 60);
+  if (slides[cur].querySelector('#smlChart')) setTimeout(drawSMLChart, 60);
+})();
 </script>
 </body>
 </html>

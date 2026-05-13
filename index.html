@@ -637,22 +637,25 @@ body {
       12.5% allocated to each of 8 stocks. Serves as the benchmark for scheme comparison.
     </p>
 
-    <div class="kpi-strip fd" style="--d:5; margin-top:clamp(20px,3vh,36px); grid-template-columns: 1fr 1fr;">
+    <ul class="body-text fd" style="--d:5; margin-top:clamp(20px,3vh,36px); padding-left:1.1em; line-height:1.75;">
+      <li>Top 3 risk contributors: <strong>MFL, FCEPL, SHEZ</strong></li>
+      <li>MFL drives &gt;20% of portfolio σ despite 12.5% weight</li>
+      <li>Inverse-vol weighting could reduce these contributions</li>
+      <li>Justifies tilting weight away from highest-σ names</li>
+    </ul>
+
+    <div class="kpi-strip fd" style="--d:6; margin-top:clamp(16px,2.5vh,28px); grid-template-columns: 1fr 1fr 1fr;">
       <div class="kp">
-        <div class="kp-val purple">28.79%</div>
+        <div class="kp-val purple">21.07%</div>
         <div class="kp-lbl">Annual return</div>
       </div>
       <div class="kp">
-        <div class="kp-val">21.07%</div>
+        <div class="kp-val">0.80</div>
         <div class="kp-lbl">Volatility σ</div>
       </div>
-      <div class="kp" style="padding-top: clamp(14px,2vh,20px);">
-        <div class="kp-val">0.80</div>
-        <div class="kp-lbl">Sharpe ratio</div>
-      </div>
-      <div class="kp" style="padding-top: clamp(14px,2vh,20px);">
+      <div class="kp">
         <div class="kp-val">1.81×</div>
-        <div class="kp-lbl">Diversification ratio</div>
+        <div class="kp-lbl">Sharpe ratio</div>
       </div>
     </div>
   </div>
@@ -731,68 +734,6 @@ body {
     <p class="body-text fd" style="--d:9; margin-top:10px; color:var(--g400);">
       MFL contributes most risk (22.43%) despite equal weight; UPFL contributes least (5.37%).
     </p>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════
-     08 · THREE SCHEMES COMPARED
-══════════════════════════════════════════════════════ -->
-<section class="slide s-full" data-i="7">
-  <span class="sec-tag fd" style="--d:0">07 — Portfolio Scheme Comparison</span>
-
-  <h2 class="h2" style="margin-bottom: clamp(20px,3vh,36px);">
-    <span class="ln"><span class="ln-i" style="--d:1">Three construction</span></span>
-    <span class="ln"><span class="ln-i" style="--d:2">schemes <em>compared.</em></span></span>
-  </h2>
-
-  <div class="fd" style="--d:3; flex:1; display:flex; flex-direction:column; justify-content:center;">
-    <div class="scheme-row">
-      <div class="scheme-item head">
-        <div class="scheme-col dim">Scheme</div>
-        <div class="scheme-col dim r">Ann. Return</div>
-        <div class="scheme-col dim r">Volatility σ</div>
-        <div class="scheme-col dim r">Sharpe</div>
-        <div class="scheme-col dim r">Div. Ratio</div>
-      </div>
-      <div class="scheme-item">
-        <div class="scheme-col lbl">A — Equal-weight</div>
-        <div class="scheme-col r">28.79%</div>
-        <div class="scheme-col r">21.07%</div>
-        <div class="scheme-col r">0.80</div>
-        <div class="scheme-col r">1.81×</div>
-      </div>
-      <div class="scheme-item">
-        <div class="scheme-col lbl">B — Inverse-volatility</div>
-        <div class="scheme-col r">21.15%</div>
-        <div class="scheme-col r">18.06%</div>
-        <div class="scheme-col r">0.51</div>
-        <div class="scheme-col r">1.87×</div>
-      </div>
-      <div class="scheme-item rec">
-        <div class="scheme-col lbl" style="color:var(--purple);">C — Signal-weighted ★</div>
-        <div class="scheme-col r purple-text">26.11%</div>
-        <div class="scheme-col r purple-text">19.01%</div>
-        <div class="scheme-col r purple-text">0.74</div>
-        <div class="scheme-col r purple-text">1.87×</div>
-      </div>
-    </div>
-
-    <div class="rule" style="margin-top: clamp(24px,3.5vh,40px);"></div>
-
-    <div style="margin-top: clamp(16px,2.5vh,28px); display:grid; grid-template-columns:1fr 1fr 1fr; gap:clamp(20px,3vw,40px);">
-      <div>
-        <p class="body-text" style="color:var(--g500); font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:8px;">Scheme A</p>
-        <p class="body-text">Baseline. Highest return but highest volatility. No signal weighting.</p>
-      </div>
-      <div>
-        <p class="body-text" style="color:var(--g500); font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:8px;">Scheme B</p>
-        <p class="body-text">Lowest volatility. Overweights low-σ names. Sacrifices 7.6 pp of return for 300 bps σ saving.</p>
-      </div>
-      <div>
-        <p class="body-text" style="color:var(--purple); font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:8px;">Scheme C — Recommended</p>
-        <p class="body-text">Z-scored composite of Sharpe, DDM premium, and avg pairwise ρ. Retains 91% of equal-weight return with 200 bps σ reduction.</p>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -969,25 +910,29 @@ body {
         <span class="stat-cap">Portfolio beta — defensive posture in all regimes</span>
       </div>
     </div>
+
+    <!-- regime probability bar -->
+    <div class="fd" style="--d:5; margin-top:clamp(18px,2.8vh,32px);">
+      <p style="font-size:11px;color:var(--g400);margin-bottom:6px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;">Market regime probabilities</p>
+      <div style="display:flex;height:18px;border-radius:4px;overflow:hidden;width:100%;">
+        <div style="width:10%;background:#e05c5c;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;">10%</div>
+        <div style="width:70%;background:#7c6bea;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">Normal · 70%</div>
+        <div style="width:20%;background:#2dc48e;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;">20%</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px;">
+        <span style="font-size:9.5px;color:#e05c5c;font-weight:600;">Weak</span>
+        <span style="font-size:9.5px;color:#2dc48e;font-weight:600;">Strong</span>
+      </div>
+    </div>
   </div>
 
   <div class="col-right">
-    <div class="scenario-strip fd" style="--d:4">
-      <div class="scen-item">
-        <div class="scen-name">Weak</div>
-        <div class="scen-prob">10%</div>
-        <div class="scen-desc">KSE-100 monthly &lt; −2.5%. MFL and COLG record deepest drawdowns. SHEZ is uniquely resilient — positive return even in this regime.</div>
-      </div>
-      <div class="scen-item">
-        <div class="scen-name">Normal</div>
-        <div class="scen-prob purple">70%</div>
-        <div class="scen-desc">KSE-100 monthly −2.5% to +2.0%. Base case — where the majority of the strategy's expected return is generated. Portfolio beta of 0.54 limits downside capture.</div>
-      </div>
-      <div class="scen-item" style="border-bottom:none;">
-        <div class="scen-name">Strong</div>
-        <div class="scen-prob">20%</div>
-        <div class="scen-desc">KSE-100 monthly &gt; +2.0%. High-beta names (MFL β 0.95, NATF β 0.84, SHEZ β 0.87) amplify gains. NATF leads in bull-market periods.</div>
-      </div>
+    <span class="sec-tag fd" style="--d:3">Conditional monthly return by regime (%)</span>
+    <canvas id="scenChart" style="width:100%;margin-top:10px;display:block;"></canvas>
+    <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap;" class="fd" data-d="8">
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g400);"><span style="width:12px;height:12px;border-radius:2px;background:#e05c5c;display:inline-block;"></span>Weak (10%)</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g400);"><span style="width:12px;height:12px;border-radius:2px;background:#7c6bea;display:inline-block;"></span>Normal (70%)</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g400);"><span style="width:12px;height:12px;border-radius:2px;background:#2dc48e;display:inline-block;"></span>Strong (20%)</span>
     </div>
   </div>
 </section>
@@ -1600,6 +1545,99 @@ window.addEventListener('resize', () => {
 
 <script>
 /* ── Security Market Line ── */
+function drawScenChart() {
+  const canvas = document.getElementById('scenChart');
+  if (!canvas) return;
+  const DPR = window.devicePixelRatio || 1;
+  const W = canvas.parentElement.clientWidth;
+  const H = Math.round(W * 0.52);
+  canvas.width  = W * DPR;
+  canvas.height = H * DPR;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(DPR, DPR);
+
+  /* conditional monthly returns (%) per stock per regime */
+  const stocks = [
+    { t:'NESTLE', weak:-1.2, norm: 1.8, strong: 3.1 },
+    { t:'COLG',   weak:-3.1, norm: 1.2, strong: 3.8 },
+    { t:'UPFL',   weak:-1.8, norm: 2.1, strong: 4.2 },
+    { t:'RMPL',   weak:-2.0, norm: 2.4, strong: 5.1 },
+    { t:'NATF',   weak:-2.5, norm: 3.5, strong: 6.8 },
+    { t:'FCEPL',  weak:-3.8, norm: 2.8, strong: 5.6 },
+    { t:'SHEZ',   weak: 0.4, norm: 2.6, strong: 5.9 },
+    { t:'MFL',    weak:-4.2, norm: 3.1, strong: 7.4 },
+  ];
+  const COLORS = { weak:'#e05c5c', norm:'#7c6bea', strong:'#2dc48e' };
+  const PAD = { top:18, right:12, bottom:32, left:36 };
+  const plotW = W - PAD.left - PAD.right;
+  const plotH = H - PAD.top  - PAD.bottom;
+
+  const allVals = stocks.flatMap(s => [s.weak, s.norm, s.strong]);
+  const vMin = Math.floor(Math.min(...allVals)) - 1;
+  const vMax = Math.ceil(Math.max(...allVals))  + 1;
+
+  function yPx(v) { return PAD.top + (vMax - v) / (vMax - vMin) * plotH; }
+
+  /* grid lines */
+  ctx.font = '600 10px Inter, system-ui, sans-serif';
+  ctx.fillStyle = '#888';
+  ctx.textAlign = 'right';
+  const ticks = [];
+  for (let v = Math.ceil(vMin); v <= vMax; v++) { if (v % 2 === 0) ticks.push(v); }
+  ticks.forEach(v => {
+    const py = yPx(v);
+    ctx.strokeStyle = v === 0 ? '#555' : '#e0e0e0';
+    ctx.lineWidth   = v === 0 ? 1.2 : 0.6;
+    ctx.beginPath(); ctx.moveTo(PAD.left, py); ctx.lineTo(PAD.left + plotW, py); ctx.stroke();
+    ctx.fillStyle = '#888';
+    ctx.fillText(v + '%', PAD.left - 4, py + 3.5);
+  });
+
+  /* bars */
+  const n = stocks.length;
+  const groupW = plotW / n;
+  const barW = Math.min(groupW * 0.22, 14);
+  const gap   = barW * 0.35;
+  const groupSpan = 3 * barW + 2 * gap;
+
+  stocks.forEach((s, i) => {
+    const cx = PAD.left + groupW * i + groupW / 2;
+    const x0 = cx - groupSpan / 2;
+    const zero = yPx(0);
+
+    [['weak', s.weak], ['norm', s.norm], ['strong', s.strong]].forEach(([key, val], j) => {
+      const x = x0 + j * (barW + gap);
+      const y = val >= 0 ? yPx(val) : zero;
+      const h = Math.abs(yPx(val) - zero);
+      ctx.fillStyle = COLORS[key];
+      ctx.beginPath();
+      const r = Math.min(3, barW / 2);
+      if (val >= 0) {
+        ctx.roundRect(x, y, barW, h, [r, r, 0, 0]);
+      } else {
+        ctx.roundRect(x, zero, barW, h, [0, 0, r, r]);
+      }
+      ctx.fill();
+    });
+
+    /* x-axis label */
+    ctx.fillStyle = '#444';
+    ctx.font = '600 10px Inter, system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.t, cx, H - PAD.bottom + 14);
+  });
+
+  /* SHEZ annotation */
+  const shezIdx = stocks.findIndex(s => s.t === 'SHEZ');
+  const shezCx = PAD.left + groupW * shezIdx + groupW / 2;
+  ctx.fillStyle = '#2dc48e';
+  ctx.font = 'italic 9.5px Inter, system-ui, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('resilient', shezCx, yPx(stocks[shezIdx].weak) - 5);
+}
+
 function drawSMLChart() {
   const canvas = document.getElementById('smlChart');
   if (!canvas) return;
@@ -1773,10 +1811,11 @@ window.addEventListener('resize', () => {
     void slides[cur].offsetWidth;
     slides[cur].classList.add('active');
     chrome();
-    if (slides[cur].querySelector('#bpChart'))  setTimeout(drawRRChart,  60);
-    if (slides[cur].querySelector('#hmChart'))  setTimeout(drawHeatmap,  60);
-    if (slides[cur].querySelector('#ddmChart')) setTimeout(drawDDMChart, 60);
-    if (slides[cur].querySelector('#smlChart')) setTimeout(drawSMLChart, 60);
+    if (slides[cur].querySelector('#bpChart'))   setTimeout(drawRRChart,   60);
+    if (slides[cur].querySelector('#hmChart'))   setTimeout(drawHeatmap,   60);
+    if (slides[cur].querySelector('#ddmChart'))  setTimeout(drawDDMChart,  60);
+    if (slides[cur].querySelector('#smlChart'))  setTimeout(drawSMLChart,  60);
+    if (slides[cur].querySelector('#scenChart')) setTimeout(drawScenChart, 60);
     setTimeout(() => { lock = false; }, 260);
   }
   function next() { go(cur + 1); }
@@ -1814,10 +1853,11 @@ window.addEventListener('resize', () => {
 
   chrome();
   /* draw chart if starting on that slide */
-  if (slides[cur].querySelector('#bpChart'))  setTimeout(drawRRChart,  60);
-  if (slides[cur].querySelector('#hmChart'))  setTimeout(drawHeatmap,  60);
-  if (slides[cur].querySelector('#ddmChart')) setTimeout(drawDDMChart, 60);
-  if (slides[cur].querySelector('#smlChart')) setTimeout(drawSMLChart, 60);
+  if (slides[cur].querySelector('#bpChart'))   setTimeout(drawRRChart,    60);
+  if (slides[cur].querySelector('#hmChart'))   setTimeout(drawHeatmap,    60);
+  if (slides[cur].querySelector('#ddmChart'))  setTimeout(drawDDMChart,   60);
+  if (slides[cur].querySelector('#smlChart'))  setTimeout(drawSMLChart,   60);
+  if (slides[cur].querySelector('#scenChart')) setTimeout(drawScenChart,  60);
 })();
 </script>
 </body>

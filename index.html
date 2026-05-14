@@ -786,73 +786,6 @@ body {
 </section>
 
 <!-- ══════════════════════════════════════════════════════
-     10 · PORTFOLIO BETA & RISK DECOMPOSITION
-══════════════════════════════════════════════════════ -->
-<section class="slide s-full" data-i="9">
-  <span class="sec-tag fd" style="--d:0">09 — Systematic vs Unsystematic Risk</span>
-
-  <h2 class="h2" style="margin-bottom:clamp(20px,3vh,36px);">
-    <span class="ln"><span class="ln-i" style="--d:1">Portfolio beta &amp; risk</span></span>
-    <span class="ln"><span class="ln-i" style="--d:2"><em>decomposition.</em></span></span>
-  </h2>
-
-  <div class="fd" style="--d:3; flex:1; display:flex; flex-direction:column; gap:clamp(14px,2.2vh,24px);">
-
-    <table class="tbl">
-      <thead>
-        <tr>
-          <th>Scheme</th>
-          <th class="r">Portfolio β</th>
-          <th class="r">Risk premium</th>
-          <th class="r">SML required return</th>
-          <th class="r">Systematic risk share</th>
-          <th class="r">Diversification ratio</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>A — Equal-weight</td>
-          <td class="r mono">0.61</td>
-          <td class="r mono">3.65%</td>
-          <td class="r mono">15.65%</td>
-          <td class="r mono">~14%</td>
-          <td class="r mono">1.81×</td>
-        </tr>
-        <tr>
-          <td>B — Inverse-volatility</td>
-          <td class="r mono">0.51</td>
-          <td class="r mono">3.08%</td>
-          <td class="r mono">15.08%</td>
-          <td class="r mono">~13%</td>
-          <td class="r mono">1.87×</td>
-        </tr>
-        <tr class="hl">
-          <td><strong>C — Signal-weighted (rec.)</strong></td>
-          <td class="r mono purple-text">0.54</td>
-          <td class="r mono purple-text">3.22%</td>
-          <td class="r mono purple-text">15.22%</td>
-          <td class="r mono purple-text">~14%</td>
-          <td class="r mono purple-text">1.87×</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="rule"></div>
-
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:clamp(20px,3vw,40px);">
-      <div>
-        <p class="body-text" style="font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--g400); margin-bottom:10px;">Variance decomposition</p>
-        <p class="body-text">Systematic (β-related) risk accounts for approximately <strong>14%</strong> of total portfolio variance. The remaining <strong>86%</strong> is unsystematic — diversifiable through cross-asset allocation. This confirms the diversification benefit is structural, not incidental.</p>
-      </div>
-      <div>
-        <p class="body-text" style="font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--g400); margin-bottom:10px;">Efficient frontier — Monte Carlo (5,000 trials)</p>
-        <p class="body-text">All weight combinations simulated. Signal-weighted scheme (C) plots near-frontier with the best return-to-risk trade-off across the three schemes. Max-Sharpe portfolio exists on the frontier; the signal approach approximates it without overfitting.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════
      11 · SCENARIO ANALYSIS
 ══════════════════════════════════════════════════════ -->
 <section class="slide col-2" data-i="10">
@@ -1639,9 +1572,11 @@ function drawWeightsChart() {
     { label:'FCEPL',  pct: 8.1, color:'#e8994a' },
   ];
 
+  const LABEL_PAD = size * 0.14; /* breathing room for labels on all sides */
+  const drawSize  = size - LABEL_PAD * 2;
   const cx = size / 2, cy = size / 2;
-  const outerR = size * 0.42;
-  const innerR = size * 0.24;
+  const outerR = drawSize * 0.42;
+  const innerR = drawSize * 0.24;
   const total  = slices.reduce((s, d) => s + d.pct, 0);
   const GAP    = 0.018; /* radians gap between slices */
 
@@ -1667,12 +1602,13 @@ function drawWeightsChart() {
 
     /* label outside the slice */
     const midA   = angle + GAP / 2 + sweep / 2;
-    const labelR = outerR * 1.13;
+    const labelR = outerR * 1.22;
     const lx = cx + Math.cos(midA) * labelR;
     const ly = cy + Math.sin(midA) * labelR;
+    const isRight = Math.cos(midA) >= 0;
     ctx.font = `700 ${Math.round(size * 0.033)}px Inter, system-ui, sans-serif`;
     ctx.fillStyle = '#1a1a1a';
-    ctx.textAlign  = lx > cx ? 'left' : 'right';
+    ctx.textAlign  = isRight ? 'left' : 'right';
     ctx.textBaseline = 'middle';
     ctx.fillText(s.label, lx, ly - size * 0.016);
     ctx.font = `500 ${Math.round(size * 0.028)}px Inter, system-ui, sans-serif`;

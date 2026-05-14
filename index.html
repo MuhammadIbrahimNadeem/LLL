@@ -524,6 +524,22 @@ body {
 
 
 <!-- ══════════════════════════════════════════════════════
+     03b · COEFFICIENT OF VARIATION
+══════════════════════════════════════════════════════ -->
+<section class="slide s-full" data-i="3" style="padding:clamp(24px,3vh,40px) clamp(28px,4vw,56px);">
+  <span class="sec-tag fd" style="--d:0">03 — Coefficient of Variation</span>
+  <h2 class="h2 fd" style="--d:1; margin-bottom:clamp(10px,1.5vh,18px);">
+    <span class="ln"><span class="ln-i" style="--d:1">CV = σ / mean &nbsp;·&nbsp; <em>lower is better.</em></span></span>
+  </h2>
+  <div class="fd" style="--d:2; flex:1; min-height:0; position:relative;">
+    <canvas id="cvChart" style="width:100%; height:100%; display:block;"></canvas>
+  </div>
+  <p class="body-text fd" style="--d:6; margin-top:8px; color:var(--g400);">
+    CV measures return per unit of risk — NESTLE's high CV reflects low mean return relative to its σ · National Foods and Shezan show best consistency
+  </p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
      04 · CORRELATION
 ══════════════════════════════════════════════════════ -->
 <section class="slide col-2" data-i="3">
@@ -734,6 +750,38 @@ body {
     <p class="body-text fd" style="--d:9; margin-top:10px; color:var(--g400);">
       MFL contributes most risk (22.43%) despite equal weight; UPFL contributes least (5.37%).
     </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     08 · RECOMMENDED PORTFOLIO WEIGHTS
+══════════════════════════════════════════════════════ -->
+<section class="slide col-2" data-i="7">
+  <div class="col-left">
+    <span class="sec-tag fd" style="--d:0">07 — Recommended Portfolio</span>
+    <h2 class="h2">
+      <span class="ln"><span class="ln-i" style="--d:1">Signal-weighted</span></span>
+      <span class="ln"><span class="ln-i" style="--d:2">recommended</span></span>
+      <span class="ln"><span class="ln-i" style="--d:3"><em>weights.</em></span></span>
+    </h2>
+
+    <ul class="body-text fd" style="--d:4; margin-top:clamp(20px,3vh,36px); padding-left:1.1em; line-height:2;">
+      <li><strong>UPFL: 25.0%</strong> <span style="color:var(--g400);">(max cap)</span></li>
+      <li><strong>RMPL: 20.0%</strong></li>
+      <li><strong>NATF: 13.0%</strong></li>
+      <li><strong>MFL: 9.8%</strong></li>
+      <li><strong>NESTLE / COLG / FCEPL / SHEZ: 8.1% each</strong> <span style="color:var(--g400);">(floor)</span></li>
+    </ul>
+
+    <div class="fd" style="--d:5; margin-top:clamp(18px,2.8vh,32px); border-top:1px solid var(--g200); padding-top:clamp(14px,2vh,20px);">
+      <p class="body-text" style="font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--g400); margin-bottom:8px;">Signal logic</p>
+      <p class="body-text">Weights combine three signals: SML alpha (excess return vs CAPM), DDM premium/discount, and inverse volatility tilt. UPFL and RMPL are rewarded for low drawdown and strong DDM undervaluation. NATF earns 13% for outstanding Sharpe (1.38) and alpha generation. The 8.1% floor maintains breadth across all names.</p>
+    </div>
+  </div>
+
+  <div class="col-right" style="align-items:center; justify-content:center;">
+    <span class="sec-tag fd" style="--d:3">Recommended portfolio weights</span>
+    <canvas id="wtChart" style="width:100%; max-width:420px; margin-top:16px; display:block;"></canvas>
   </div>
 </section>
 
@@ -1462,6 +1510,181 @@ window.addEventListener('resize', () => {
 
 <script>
 /* ── Security Market Line ── */
+function drawCVChart() {
+  const canvas = document.getElementById('cvChart');
+  if (!canvas) return;
+  const DPR = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  canvas.width  = rect.width  * DPR;
+  canvas.height = rect.height * DPR;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(DPR, DPR);
+
+  const W = rect.width, H = rect.height;
+  const PAD = { top: 28, right: 20, bottom: 86, left: 52 };
+  const plotW = W - PAD.left - PAD.right;
+  const plotH = H - PAD.top  - PAD.bottom;
+
+  const stocks = [
+    { label:'Nestle Pakistan Ltd.',             short:'NESTLE', cv:46.85, color:'#1565c0' },
+    { label:'Unilever Pakistan Foods Ltd.',     short:'UPFL',   cv:11.39, color:'#e65100' },
+    { label:'National Foods Ltd.',              short:'NATF',   cv: 5.99, color:'#2e7d32' },
+    { label:'Colgate-Palmolive (Pak) Ltd.',     short:'COLG',   cv:21.01, color:'#b71c1c' },
+    { label:'FrieslandCampina Engro Pak Ltd.',  short:'FCEPL',  cv:11.08, color:'#6a1b9a' },
+    { label:'Matco Foods Ltd.',                 short:'MFL',    cv: 8.67, color:'#795548' },
+    { label:'Rahan Maize Products Co. Ltd.',    short:'RMPL',   cv:15.54, color:'#ec407a' },
+    { label:'Shezan International Ltd.',        short:'SHEZ',   cv: 7.00, color:'#546e7a' },
+  ];
+
+  const maxCV   = Math.max(...stocks.map(s => s.cv));
+  const yMax    = Math.ceil(maxCV / 5) * 5 + 5;
+  const G200    = '#e8e8e8';
+  const G500    = '#888';
+
+  function yPx(v) { return PAD.top + (1 - v / yMax) * plotH; }
+
+  /* y-axis grid + labels */
+  ctx.font = '500 11px Inter, system-ui, sans-serif';
+  const yTicks = [];
+  for (let v = 0; v <= yMax; v += 10) yTicks.push(v);
+  yTicks.forEach(v => {
+    const py = yPx(v);
+    ctx.strokeStyle = v === 0 ? '#aaa' : G200;
+    ctx.lineWidth   = v === 0 ? 1.2 : 0.7;
+    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(PAD.left, py); ctx.lineTo(PAD.left + plotW, py); ctx.stroke();
+    ctx.fillStyle = G500; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+    ctx.fillText(v, PAD.left - 8, py);
+  });
+
+  /* y-axis title */
+  ctx.save();
+  ctx.translate(14, PAD.top + plotH / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = G500; ctx.font = '500 11px Inter, system-ui, sans-serif';
+  ctx.fillText('CV', 0, 0);
+  ctx.restore();
+
+  /* chart title */
+  ctx.font = '600 12.5px Inter, system-ui, sans-serif';
+  ctx.fillStyle = '#333'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  ctx.fillText('Coefficient of Variation  (lower = better)', W / 2, 6);
+
+  /* bars */
+  const n     = stocks.length;
+  const slotW = plotW / n;
+  const barW  = Math.min(slotW * 0.58, 72);
+  const zero  = yPx(0);
+
+  stocks.forEach((s, i) => {
+    const cx = PAD.left + slotW * i + slotW / 2;
+    const x  = cx - barW / 2;
+    const bH = zero - yPx(s.cv);
+    const y  = yPx(s.cv);
+    const r  = Math.min(4, barW / 4);
+
+    ctx.fillStyle = s.color;
+    ctx.beginPath();
+    ctx.roundRect(x, y, barW, bH, [r, r, 0, 0]);
+    ctx.fill();
+
+    /* value label on top of bar */
+    ctx.fillStyle = '#222';
+    ctx.font = `700 ${Math.min(12, Math.round(barW * 0.17))}px Inter, system-ui, sans-serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+    ctx.fillText(s.cv.toFixed(2), cx, y - 3);
+
+    /* x-axis company label — angled */
+    ctx.save();
+    ctx.translate(cx, zero + 10);
+    ctx.rotate(-Math.PI / 4);
+    ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#333';
+    ctx.font = `500 ${Math.min(11.5, Math.round(slotW * 0.18))}px Inter, system-ui, sans-serif`;
+    ctx.fillText(s.label, 0, 0);
+    ctx.restore();
+  });
+}
+
+function drawWeightsChart() {
+  const canvas = document.getElementById('wtChart');
+  if (!canvas) return;
+  const DPR = window.devicePixelRatio || 1;
+  const size = Math.min(canvas.parentElement.clientWidth, 420);
+  canvas.width  = size * DPR;
+  canvas.height = size * DPR;
+  canvas.style.width  = size + 'px';
+  canvas.style.height = size + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(DPR, DPR);
+
+  const slices = [
+    { label:'UPFL',   pct:25.0, color:'#1f4e91' },
+    { label:'RMPL',   pct:20.0, color:'#3a7fd4' },
+    { label:'NATF',   pct:13.0, color:'#3aaf6b' },
+    { label:'MFL',    pct: 9.8, color:'#d94f3d' },
+    { label:'SHEZ',   pct: 8.1, color:'#a8c8e8' },
+    { label:'NESTLE', pct: 8.1, color:'#c87941' },
+    { label:'COLG',   pct: 8.1, color:'#6a3fa3' },
+    { label:'FCEPL',  pct: 8.1, color:'#e8994a' },
+  ];
+
+  const cx = size / 2, cy = size / 2;
+  const outerR = size * 0.42;
+  const innerR = size * 0.24;
+  const total  = slices.reduce((s, d) => s + d.pct, 0);
+  const GAP    = 0.018; /* radians gap between slices */
+
+  let angle = -Math.PI / 2;
+  slices.forEach(s => {
+    const sweep = (s.pct / total) * 2 * Math.PI - GAP;
+
+    /* slice */
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, outerR, angle + GAP / 2, angle + sweep + GAP / 2);
+    ctx.closePath();
+    ctx.fillStyle = s.color;
+    ctx.fill();
+
+    /* inner hole */
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, innerR, angle + GAP / 2, angle + sweep + GAP / 2);
+    ctx.closePath();
+    ctx.fillStyle = '#ffffff';
+    ctx.fill();
+
+    /* label outside the slice */
+    const midA   = angle + GAP / 2 + sweep / 2;
+    const labelR = outerR * 1.13;
+    const lx = cx + Math.cos(midA) * labelR;
+    const ly = cy + Math.sin(midA) * labelR;
+    ctx.font = `700 ${Math.round(size * 0.033)}px Inter, system-ui, sans-serif`;
+    ctx.fillStyle = '#1a1a1a';
+    ctx.textAlign  = lx > cx ? 'left' : 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(s.label, lx, ly - size * 0.016);
+    ctx.font = `500 ${Math.round(size * 0.028)}px Inter, system-ui, sans-serif`;
+    ctx.fillStyle = '#555';
+    ctx.fillText(s.pct.toFixed(1) + '%', lx, ly + size * 0.016);
+
+    angle += sweep + GAP;
+  });
+
+  /* centre label */
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#0D0D0D';
+  ctx.font = `800 ${Math.round(size * 0.07)}px Inter, system-ui, sans-serif`;
+  ctx.fillText('8', cx, cy - size * 0.04);
+  ctx.font = `500 ${Math.round(size * 0.032)}px Inter, system-ui, sans-serif`;
+  ctx.fillStyle = '#888';
+  ctx.fillText('stocks', cx, cy + size * 0.04);
+}
+
 function drawScenChart() {
   const canvas = document.getElementById('scenChart');
   if (!canvas) return;
@@ -1728,11 +1951,13 @@ window.addEventListener('resize', () => {
     void slides[cur].offsetWidth;
     slides[cur].classList.add('active');
     chrome();
-    if (slides[cur].querySelector('#bpChart'))   setTimeout(drawRRChart,   60);
-    if (slides[cur].querySelector('#hmChart'))   setTimeout(drawHeatmap,   60);
-    if (slides[cur].querySelector('#ddmChart'))  setTimeout(drawDDMChart,  60);
-    if (slides[cur].querySelector('#smlChart'))  setTimeout(drawSMLChart,  60);
-    if (slides[cur].querySelector('#scenChart')) setTimeout(drawScenChart, 60);
+    if (slides[cur].querySelector('#bpChart'))   setTimeout(drawRRChart,      60);
+    if (slides[cur].querySelector('#hmChart'))   setTimeout(drawHeatmap,      60);
+    if (slides[cur].querySelector('#ddmChart'))  setTimeout(drawDDMChart,     60);
+    if (slides[cur].querySelector('#smlChart'))  setTimeout(drawSMLChart,     60);
+    if (slides[cur].querySelector('#scenChart')) setTimeout(drawScenChart,    60);
+    if (slides[cur].querySelector('#wtChart'))   setTimeout(drawWeightsChart, 60);
+    if (slides[cur].querySelector('#cvChart'))   setTimeout(drawCVChart,      60);
     setTimeout(() => { lock = false; }, 260);
   }
   function next() { go(cur + 1); }
@@ -1770,11 +1995,13 @@ window.addEventListener('resize', () => {
 
   chrome();
   /* draw chart if starting on that slide */
-  if (slides[cur].querySelector('#bpChart'))   setTimeout(drawRRChart,    60);
-  if (slides[cur].querySelector('#hmChart'))   setTimeout(drawHeatmap,    60);
-  if (slides[cur].querySelector('#ddmChart'))  setTimeout(drawDDMChart,   60);
-  if (slides[cur].querySelector('#smlChart'))  setTimeout(drawSMLChart,   60);
-  if (slides[cur].querySelector('#scenChart')) setTimeout(drawScenChart,  60);
+  if (slides[cur].querySelector('#bpChart'))   setTimeout(drawRRChart,      60);
+  if (slides[cur].querySelector('#hmChart'))   setTimeout(drawHeatmap,      60);
+  if (slides[cur].querySelector('#ddmChart'))  setTimeout(drawDDMChart,     60);
+  if (slides[cur].querySelector('#smlChart'))  setTimeout(drawSMLChart,     60);
+  if (slides[cur].querySelector('#scenChart')) setTimeout(drawScenChart,    60);
+  if (slides[cur].querySelector('#wtChart'))   setTimeout(drawWeightsChart, 60);
+  if (slides[cur].querySelector('#cvChart'))   setTimeout(drawCVChart,      60);
 })();
 </script>
 </body>
